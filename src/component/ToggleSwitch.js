@@ -15,7 +15,7 @@ function ToggleSwitch() {
         onClick={toggleSwitch} 
         style={{
           padding: '10px 20px',
-          backgroundColor: isOn ? 'green' : 'gray', 
+          backgroundColor: isOn ? '#52c771' : 'gray', 
           color: 'white',
           border: 'none',
           borderRadius: '20px',

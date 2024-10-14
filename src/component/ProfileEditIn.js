@@ -1,7 +1,8 @@
 import React from "react";
 import EditProfileSideNav from "./EditProfileSideNav";
 import { Link } from 'react-router-dom';
-import './MyPage.css';
+import { NavLink } from 'react-router-dom';
+import '../styles/MyPage.css';
 
 
 function ProfileEditIn({ userName, profileImage, userId }) {
@@ -32,8 +33,9 @@ function ProfileEditIn({ userName, profileImage, userId }) {
                             </p>
                             <p>
                                 자기소개
-                                <textarea type="text" id="introduce-edit" maxLength="1300" placeholder="나만의 스킬, 깃허브 링크 등으로 소개글을 채워보세요."/>
+                                <textarea type="text" id="introduce-edit" placeholder="나만의 스킬, 깃허브 링크 등으로 소개글을 채워보세요."/>
                             </p>
+                            {/* maxLength로 글자수 조절가능 */}
                             <Link id="btn-link" to="/edit-profile"><button className="profile-edit-button">저장</button></Link>
                         </div>
                     </div>

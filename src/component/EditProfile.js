@@ -1,7 +1,8 @@
 import React from "react";
 import EditProfileSideNav from "./EditProfileSideNav";
 import { Link } from 'react-router-dom';
-import './MyPage.css';
+import { NavLink } from 'react-router-dom';
+import '../styles/MyPage.css';
 
 
 function EditProfile({ userName, profileImage, userId }) {

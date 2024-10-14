@@ -1,5 +1,5 @@
 import React from "react";
-import "./FindPage.css"
+import "../styles/FindPage.css"
 
 function FindEmail() {
     return(

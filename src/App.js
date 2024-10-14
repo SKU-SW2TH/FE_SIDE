@@ -20,6 +20,7 @@ import ProfileEditIn from './component/ProfileEditIn';
 import EditEmail from './component/EditEmail';
 import WriteIntroduce from './component/WriteIntroduce';
 
+
 function App() {
   return(
     <BrowserRouter>

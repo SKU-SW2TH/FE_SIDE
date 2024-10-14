@@ -1,6 +1,6 @@
 import React from "react";
 import EditProfileSideNav from "./EditProfileSideNav";
-import './MyPage.css';
+import '../styles/MyPage.css';
 import ToggleSwitch from "./ToggleSwitch";
 
 function EditNotification() {

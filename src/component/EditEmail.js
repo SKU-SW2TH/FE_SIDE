@@ -1,7 +1,7 @@
 import React from "react";
 import EditProfileSideNav from "./EditProfileSideNav";
 import { Link } from 'react-router-dom';
-import './MyPage.css';
+import '../styles/MyPage.css';
 
 
 function EditEmail({ userName, profileImage, userId }) {
