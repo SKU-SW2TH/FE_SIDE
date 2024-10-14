@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import MyPageSideNav from './MyPageSideNav';
-import './MyPage.css';
+import '../styles/MyPage.css';
 
-const WriteIntroduce = () => {
+function WriteIntroduce() {
   return (
     <div className='container'>
       <MyPageSideNav userName="박범준" profileImage="img/image.png" />

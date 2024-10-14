@@ -16,6 +16,14 @@
     border: 1px solid #999;
 }
 
+.password-info {
+    font-size: 13px;
+    text-align: left;
+    margin-left: 661px;
+    color: #999;
+    margin-top: 10px;
+}
+
 #find-submit-button {
     width: 90px;
     cursor: pointer;
@@ -57,6 +65,21 @@
 .find-password-email {
     margin-bottom: 0px;
     margin-right: 290px;
+}
+
+.signup-email {
+    margin-bottom: 0px;
+    margin-right: 290px;
+}
+
+.signup-password {
+    margin-bottom: 0px;
+    margin-right: 277px;
+}
+
+.signup-password-confirm {
+    margin-bottom: 0px;
+    margin-right: 245px;
 }
 
 #confirm {

@@ -1,14 +1,35 @@
 // MyPageSideNav.js
-import { Link } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import React from 'react';
-import './MyPage.css';
+import '../styles/MyPage.css';
 
 function EditProfileSideNav({ userName, profileImage }) {
+
+  const location = useLocation();
+
+  const isEditProfileActive = () => {
+    return location.pathname === '/edit-profile' || location.pathname === '/profile-edit-in' || location.pathname === '/edit-email';
+  };
+
   return (
       <aside>
-        <Link className="mypage-navbar" to="/mypage">홈</Link>
-        <Link className="mypage-navbar" to="/edit-profile">계정정보</Link>
-        <Link className="mypage-navbar" to="/edit-notification">알림설정</Link>
+        <nav>
+      <NavLink 
+        to="/mypage" 
+        className={({ isActive }) => (isActive ? 'active-link' : 'inactive-link')}>
+        ·홈
+      </NavLink>
+      <NavLink 
+          to="/edit-profile" 
+          className={isEditProfileActive() ? 'active-link' : 'inactive-link'}>
+          ·계정정보
+        </NavLink>
+      <NavLink 
+        to="/edit-notification" 
+        className={({ isActive }) => (isActive ? 'active-link' : 'inactive-link')}>
+        ·알림설정
+      </NavLink>
+    </nav>
       </aside>
   );
 }

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
-import './LoginPopup.css'; // 팝업 스타일링을 위한 css 파일
+import '../styles/LoginPopup.css'; // 팝업 스타일링을 위한 css 파일
 
 function LoginPopup({ closePopup }) {
   return (
