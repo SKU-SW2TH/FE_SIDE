@@ -1,0 +1,67 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .App-header {
+    color: black;
+    display: flex;
+    grid-area: header;
+    background-color: #f5f7fa;
+    color: white;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .logo-image {
+    margin-left: 30px;
+    padding-top: 10px;
+    width: 140px;
+    height: 33px;
+  }
+  
+  /* 네비게이션 바 스타일 */
+  .navbar ul {
+    margin-top: 10px;
+    display: flex;
+    list-style: none;
+    padding-left: 50px;
+  }
+  
+  .navbar ul li {
+    margin: 0 15px;
+  }
+  
+  .navbar ul li a {
+    text-decoration: none;
+    color: black;
+    font-size: large;
+    font-weight: bold;
+  }
+  
+  /* 로그인/회원가입 버튼 */
+  .auth-buttons {
+    margin-left: auto;
+    display: flex;
+    margin-right: 10px;
+  }
+  
+  .auth-buttons .login, .auth-buttons .signup {
+    margin-left: 10px;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+  }
+   
+  .auth-buttons .login {
+    background-color: #f5f7fa;
+    color: #4caf4f;
+    font-weight: bold;
+  }
+  
+  .auth-buttons .signup {
+    background-color: #4caf4f;
+    color: white;
+    border-radius: 10px;
+  }

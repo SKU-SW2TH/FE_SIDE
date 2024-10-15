@@ -1,0 +1,18 @@
+.Calendar {
+    display: grid;
+    grid-template-areas:
+      "header"
+      "main"
+      "footer";
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+
+.Calendar-main {
+    display: flex;
+    grid-area: main;
+    background-color: #ffffff;
+    text-align: center;
+    flex-direction: row;
+}

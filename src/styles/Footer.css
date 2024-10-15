@@ -1,0 +1,85 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .App-footer {
+    display: flex;
+    height: 250px;
+    background-color: #263238; /* 배경 색상 */
+    color: white; /* 글자 색상 */
+    text-align: left; /* 왼쪽 정렬 */
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  
+  .footer-bottom {
+    display: grid;
+    justify-content: space-between; /* 양 끝에 정렬 */
+    align-items: center; /* 수직 정렬 */
+    padding-left: 10%;
+    
+  }
+  
+  .footer-bottom img.logo-image {
+    width: 190px;
+    height: 40px;
+  }
+  
+  .footer-bottom p {
+    margin-left: 30px;
+  }
+  
+  .footer-links {
+    padding-left: 350px;
+    padding-top: 30px;
+    display: flex; /* 플렉스 박스를 사용하여 링크 섹션을 나란히 배치 */
+    justify-content: space-between; /* 각 섹션 사이에 공간을 두기 */
+  }
+  
+  .footer-links > div {
+    flex: 1; /* 각 섹션이 동일한 너비를 가짐 */
+    margin-right: 120px; /* 오른쪽 여백 */
+  }
+  
+  .footer-links h3 {
+    margin-bottom: 10px; /* 제목과 목록 사이의 간격 */
+  }
+  
+  .footer-links ul {
+    list-style: none; /* 목록 스타일 제거 */
+    padding-top: 5px; /* 패딩 제거 */
+  }
+  
+  .footer-links ul li {
+    margin-top: 13px; /* 각 항목 사이의 간격 */
+  }
+  
+  .footer-links a {
+    color: white; /* 링크 색상 */
+    text-decoration: none; /* 링크의 기본 밑줄 제거 */
+  }
+  
+  .footer-links a:hover {
+    text-decoration: underline; /* 호버 시 밑줄 추가 */
+  }
+  
+  .social-icons {
+    display: flex; /* 플렉스 박스를 사용하여 소셜 아이콘을 나란히 배치 */
+    margin-left: 30px;
+  }
+  
+  .social-icons a {
+    color: white; /* 소셜 아이콘 색상 */
+    margin-right: 15px; /* 아이콘 사이의 간격 */
+  }
+  
+  .social-icons a:hover {
+    text-decoration: underline; /* 호버 시 밑줄 추가 */
+  }
+  
+  .newsletter select {
+    padding: 5px; /* 패딩 */
+    margin-top: 10px; /* 상단 여백 */
+  }
