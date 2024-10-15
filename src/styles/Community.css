@@ -1,0 +1,56 @@
+.community-title {
+    font-size: 25px;
+    font-weight: bold;
+    text-align: left;
+    margin-top: 40px;
+    margin-left: -30px;
+}
+
+.community-input {
+    text-align: center;
+    margin-top: 100px;
+    margin-right: 230px;
+}
+
+#community-input {
+    width: 500px;
+    height: 30px;
+}
+
+.community-search-button {
+    background-color: white; /* 배경색 */
+    color: black; /* 텍스트 색상 */
+    border-radius: 10px; /* 모서리 둥글게 */
+    padding: 9px 20px; /* 안쪽 여백 */
+    border-width: 0.5px;
+    margin-left: 10px;
+    font-size: 15px; /* 폰트 크기 */
+    cursor: pointer; /* 커서 모양 변경 */
+    transition: background-color 0.3s; /* 배경색 변화에 애니메이션 추가 */
+}
+
+.community-search-button:hover {  
+  background-color: #f5f5f5d9; /* 호버 시 배경색 변경 */
+}
+
+.community-select {
+    margin-left: 700px;
+    margin-top: 40px;
+}
+
+.write-button {
+    margin-left: 30px;
+}
+
+.title-info {
+    text-align: left;
+    margin-top: 30px;
+}
+
+.title-info-sub {
+    margin-left: 850px;
+}
+
+.sub {
+    margin-left: 10px;
+}

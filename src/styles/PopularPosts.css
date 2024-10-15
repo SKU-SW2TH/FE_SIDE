@@ -1,0 +1,74 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* 인기글 섹션 스타일 */
+  .popular {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  
+  .popular-posts-container {
+    width: 40%;
+    min-width: 300px;
+    max-width: 650px;
+    margin: 40px 100px;
+    padding: 25px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .popular-posts-container h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .popular-posts-container ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .post-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .rank {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #4caf4f;
+    margin-right: 10px;
+  }
+  
+  .post-details {
+    flex-grow: 1;
+    text-align: left;
+  }
+  
+  .post-details .title {
+    font-size: 1em;
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .post-details .comments {
+    font-size: 0.9em;
+    color: #888;
+  }
+  
+  .post-meta {
+    font-size: 0.9em;
+    color: #888;
+    text-align: right;
+  }
+  
+  .post-meta span{
+    margin-left: 20px;
+  }

@@ -1,0 +1,30 @@
+/* NoticeList.css */
+.notice-container h2 {
+    font-size: 1.8em; /* 제목 크기 */
+    margin-bottom: 10px; /* 제목과 내용 간격 */
+}
+
+.notice-container h3 {
+    font-size: 1.4em; /* 서브 제목 크기 */
+    margin: 15px 0 5px; /* 서브 제목 간격 조정 */
+    color: #333; /* 글자 색상 */
+}
+
+.notice-container p {
+    font-size: 1.1em; /* 본문 글자 크기 */
+    line-height: 1.6; /* 줄 간격 */
+    margin: 10px 0; /* 문단 간격 */
+}
+
+.notice-container ul {
+    margin-left: 20px; /* 리스트 여백 */
+    list-style-type: disc; /* 리스트 스타일 */
+}
+
+.notice-container ul li {
+    margin: 5px 0; /* 리스트 항목 간격 */
+}
+
+.notice-container span {
+    font-weight: bold; /* 강조 표시 */
+}

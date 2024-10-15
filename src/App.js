@@ -1,33 +1,41 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Main from './component/Main';
-import MyPage from './component/MyPage';
-import Nav from './component/Nav';
-import CommunityFree from './component/CommunityFree';
-import CommunityGathering from './component/CommunityGathering';
-import CommunityQuestion from './component/CommunityQuestion';
-import EditProfile from './component/EditProfile';
-import MyPageFriend from './component/MyPageFriend';
-import MyPageStudy from './component/MyPageStudy';
-import MyPageQuestion from './component/MyPageQuestion';
-import MyPageFree from './component/MyPageFree';
-import EditNotification from './component/EditNotification';
-import LoginPopup from './component/LoginPopup';
-import FindPassword from './component/FindPassword';
-import FindEmail from './component/FindEmail';
-import SignUp from './component/SignUp';
-import ProfileEditIn from './component/ProfileEditIn';
-import EditEmail from './component/EditEmail';
-import WriteIntroduce from './component/WriteIntroduce';
+import MyPage from './components/MyPage/MyPage';
+import CommunityFree from './components/Community/CommunityFree';
+import CommunityGathering from './components/Community/CommunityGathering';
+import CommunityQuestion from './components/Community/CommunityQuestion';
+import EditProfile from './components/MyPage/EditProfile';
+import MyPageFriend from './components/MyPage/MyPageFriend';
+import MyPageStudy from './components/MyPage/MyPageStudy';
+import MyPageQuestion from './components/MyPage/MyPageQuestion';
+import MyPageFree from './components/MyPage/MyPageFree';
+import EditNotification from './components/MyPage/EditNotification';
+import LoginPopup from './components/MyPage/LoginPopup';
+import FindPassword from './components/MyPage/FindPassword';
+import FindEmail from './components/MyPage/FindEmail';
+import SignUp from './components/MyPage/SignUp';
+import ProfileEditIn from './components/MyPage/ProfileEditIn';
+import EditEmail from './components/MyPage/EditEmail';
+import WriteIntroduce from './components/MyPage/WriteIntroduce';
+import Home from './components/Main/Home';
+import Notice from './components/StudyGroup/Notice';
+import NoticeDetails from './components/StudyGroup/NoticeDetails';
+import StudyGroup from './components/StudyGroup/StudyGroup';
+import Calender from './components/StudyGroup/Calendar'
+import Header from './components/ReusableComponents/Header';
+import Footer from './components/ReusableComponents/Footer';
+import FAQ from './components/ReusableComponents/FAQ'; 
+import { SelectedChannelProvider } from './SelectedChannelContext';
 
 
 function App() {
   return(
-    <BrowserRouter>
+  <BrowserRouter>
+  <SelectedChannelProvider>
+    <Header/>
     <div className='App'>
-      <Nav/>
       <Routes>
-      <Route path='/' element={<Main/>}/>
+      <Route path='/' element={<Home/>}/>
       <Route path='/login-popup' element={<LoginPopup/>}/>
       <Route path='/mypage' element={<MyPage/>}/>
       <Route path='/mypage-free' element={<MyPageFree/>}/>
@@ -40,13 +48,21 @@ function App() {
       <Route path='/signup' element={<SignUp/>}/>
       <Route path='/edit-notification' element={<EditNotification/>}/>
       <Route path='/free' element={<CommunityFree/>}/>
-      <Route path='/gathering' element={<CommunityGathering/>}/>
+      <Route path='/gathering' element={<CommunityGathering/>}/>  
       <Route path='/question' element={<CommunityQuestion/>}/>
       <Route path='/profile-edit-in' element={<ProfileEditIn/>}/>
       <Route path='/edit-email' element={<EditEmail/>}/>
       <Route path='/write-introduce' element={<WriteIntroduce/>}/>
+       {/*브라우저에서 path에 따라 element가 렌더링된다*/ }
+      <Route path='/StudyGroup' element={<StudyGroup />} />
+      <Route path='/StudyGroup/Calendar' element={<Calender />} />
+      <Route path='/StudyGroup/Notice' element={<Notice />} />  {/*공지사항 목록 페이지*/}
+      <Route path='/StudyGroup/NoticeDetails' element={<NoticeDetails />} />  {/*공지사항 세부내용 페이지*/}
       </Routes>
     </div>
+    <Footer />
+    <FAQ></FAQ>
+    </SelectedChannelProvider>
     </BrowserRouter>
   );
 }

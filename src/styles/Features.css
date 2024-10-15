@@ -1,0 +1,14 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .features {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3개의 열로 나누기 */
+    gap: 20px;
+    margin-bottom: 50px;
+  }
+  
