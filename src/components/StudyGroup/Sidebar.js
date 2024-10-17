@@ -2,24 +2,27 @@
 import React, { useState } from 'react';
 import '../../styles/Sidebar.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSelectedChannel } from '../../SelectedChannelContext'; // Context import
+import { useSelectedChannel, useToggle } from '../../SelectedChannelContext'; // Context import
 
 const Sidebar = () => {
-    const [isOpen, setIsOpen] = useState(false);
     const { selectedChannel, setSelectedChannel } = useSelectedChannel(); // 전역 상태에서 selectedChannel 가져오기
+    const { isOpen, setIsOpen } = useToggle(); // 전역 토글 상태
     const navigate = useNavigate();
 
     const toggleSubMenu = () => {
-        setIsOpen(!isOpen);
+        setIsOpen(!isOpen); // 토글 상태 변경
     };
 
-    const handleChannelSelect = (channel) => {
-        setSelectedChannel(channel);  // 선택된 채널 업데이트
+    const handleChannelSelect = (channel, path) => {
+        setSelectedChannel(channel); // 선택된 채널 업데이트
+        if (path) {
+            navigate(path); // 페이지 이동
+        }
     };
-
+    
     const handleItemClick = (item, path) => {
-        setSelectedChannel(item);  // 선택된 아이템 업데이트
-        navigate(path);  // 페이지 이동
+        setSelectedChannel(item); // 선택된 아이템 업데이트
+        navigate(path); // 페이지 이동
     };
 
     return (
@@ -28,15 +31,15 @@ const Sidebar = () => {
             <ul>
                 <li onClick={() => handleItemClick('일정', '/StudyGroup/Calendar')}>일정</li>
                 <li onClick={() => handleItemClick('공지사항', '/StudyGroup/Notice')}>공지사항</li>
-                <li onClick={() => handleItemClick('데일리 로그')}>데일리 로그</li>
+                <li onClick={() => handleItemClick('데일리 로그', '/StudyGroup/DailyLog')}>데일리 로그</li>
                 <li onClick={() => handleItemClick('팀원')}>팀원</li>
                 <li onClick={() => handleItemClick('채팅방 설정')}>채팅방 설정</li>
                 <li onClick={toggleSubMenu} className="submenu-toggle">
-                    채널 {isOpen ? '▼' : '▲'}
+                    채널 {isOpen ? '▲' : '▼'}
                 </li>
                 {isOpen && (
                     <ul className="submenu">
-                        <li onClick={() => handleChannelSelect('# 전체')} className={selectedChannel === '# 전체' ? 'active' : ''}># 전체</li>
+                        <li onClick={() => handleChannelSelect('# 전체', '/StudyGroup/Chat')} className={selectedChannel === '# 전체' ? 'active' : ''}># 전체</li>
                         <li onClick={() => handleChannelSelect('# 김성현')} className={selectedChannel === '# 김성현' ? 'active' : ''}># 김성현</li>
                         <li onClick={() => handleChannelSelect('# 황장욱')} className={selectedChannel === '# 황장욱' ? 'active' : ''}># 황장욱</li>
                         <li onClick={() => handleChannelSelect('# 회의')} className={selectedChannel === '# 회의' ? 'active' : ''}># 회의</li>
