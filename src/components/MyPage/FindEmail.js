@@ -13,7 +13,8 @@ function FindEmail() {
                 <input type="number" id="phone" placeholder="01012341234" />
                 <button id="find-submit-button">인증 요청</button>
             </div>
-            
+        </div>
+        <div className="subtitle-form02">
             <p className="code">인증번호</p>
             <div className="find-submit-form">
                 <input type="number" id="code" placeholder="인증번호 입력" />

@@ -1,5 +1,5 @@
 import React from "react";
-import EditProfileSideNav from "./EditProfileSideNav";
+import EditProfileSideNav from "./MyPageSideNav";
 import '../../styles/MyPage.css';
 import ToggleSwitch from "../ReusableComponents/ToggleSwitch";
 
@@ -10,7 +10,7 @@ function EditNotification() {
                 <EditProfileSideNav userName="박범준" profileImage="img/image.png" />
             <div className="grid-contatiner">
                 <label className="noti-title01">
-                    <p>알림 설정</p>
+                    <p className="notification-maintitle">알림 설정</p>
                     <p className="noti-sub">이메일 수신 여부를 설정할 수 있어요. 회원약관 변경, 결제내역 등 필수적으로 안내되어야 하는 내용은 수신여부와 상관 없이 계속 발송됩니다.</p>
                 </label>
                 <div className="grid-item-noti01">

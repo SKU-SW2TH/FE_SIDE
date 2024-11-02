@@ -26,7 +26,7 @@ function CommunitySideNav({ userName, profileImage }) {
         <NavLink 
         to="/gathering" 
         className={isEditProfileActive() ? 'active-link' : 'inactive-link'}>
-        ·모집
+        ·스터디
         </NavLink>
     </nav>
     </aside>

@@ -15,9 +15,11 @@ function MyPageSideNav({ userName, profileImage }) {
 
   return (
       <aside>
+        <div className="profile-image-and">
         <img className="profileImage" alt="프로필 사진" src={profileImage || 'img/default-profile.png'} />
         <p className='userName'>{userName}</p>
           <Link className="btn-link" to="/edit-profile"><button className='editBtn'>수정하기</button></Link>
+          </div>
 
           <nav className='nav-link'>
             <NavLink 
@@ -39,11 +41,6 @@ function MyPageSideNav({ userName, profileImage }) {
               to="/mypage-study" 
               className={({ isActive }) => (isActive ? 'active-link' : 'inactive-link')}>
               ·스터디 게시글
-            </NavLink>
-            <NavLink 
-              to="/mypage-friend" 
-              className={({ isActive }) => (isActive ? 'active-link' : 'inactive-link')}>
-              ·친구 목록
             </NavLink>
           </nav>
       </aside>

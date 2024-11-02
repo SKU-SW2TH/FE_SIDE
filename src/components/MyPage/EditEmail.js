@@ -1,5 +1,5 @@
 import React from "react";
-import EditProfileSideNav from "./EditProfileSideNav";
+import MyPageSideNav from "./MyPageSideNav";
 import { Link } from 'react-router-dom';
 import '../../styles/MyPage.css';
 
@@ -11,7 +11,7 @@ function EditEmail({ userName, profileImage, userId }) {
         <div>
             <div className='container'>
                 
-                <EditProfileSideNav userName="박범준" profileImage="img/image.png" />
+                <MyPageSideNav userName="박범준" profileImage="img/image.png" />
                 
                 <div className="grid-container">
                 <div className="grid-item01">
@@ -24,10 +24,12 @@ function EditEmail({ userName, profileImage, userId }) {
                                 닉네임
                                 <span className="nickname">{userName}</span>
                             </p>
+                            <div className="introduce-editself">
                             <p>
                                 자기소개
                                 <span className="profile-introduce">나만의 스킬, 깃허브 링크 등으로 소개글을 채워보세요.</span>
                             </p>
+                            </div>
                             <Link id="btn-link" to="/profile-edit-in"><button className="profile-edit-button">설정</button></Link>
                         </div>
                     </div>
