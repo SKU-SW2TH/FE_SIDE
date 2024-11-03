@@ -32,8 +32,7 @@ const Sidebar = () => {
                 <li onClick={() => handleItemClick('일정', '/StudyGroup/Calendar')}>일정</li>
                 <li onClick={() => handleItemClick('공지사항', '/StudyGroup/Notice')}>공지사항</li>
                 <li onClick={() => handleItemClick('데일리 로그', '/StudyGroup/DailyLog')}>데일리 로그</li>
-                <li onClick={() => handleItemClick('팀원')}>팀원</li>
-                <li onClick={() => handleItemClick('채팅방 설정')}>채팅방 설정</li>
+                <li onClick={() => handleItemClick('팀원', '/StudyGroup/Team')}>팀원</li>
                 <li onClick={toggleSubMenu} className="submenu-toggle">
                     채널 {isOpen ? '▲' : '▼'}
                 </li>

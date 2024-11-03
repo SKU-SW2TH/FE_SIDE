@@ -5,72 +5,68 @@ import '../../styles/DailyLog.css'; // 스타일을 위한 CSS 파일
 const DailyLog = () => {
   const { selectedChannel } = useSelectedChannel();
   const [logs, setLogs] = useState({});
-  const [currentDate, setCurrentDate] = useState(new Date('2024-09-25')); // 초기 날짜 설정
-  const [title, setTitle] = useState('');  // 로그 제목
-  const [content, setContent] = useState('');  // 로그 내용
-  const [selectedLog, setSelectedLog] = useState(null); // 선택된 로그 상태
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
+  const [currentDate, setCurrentDate] = useState(() => {
+    const now = new Date();
+    const seoulDate = new Date(now.getTime() + (9 * 60 * 60 * 1000)); // 한국 표준시에 맞춘 현재 시간 설정
+    return seoulDate;
+  });
+  const [title, setTitle] = useState('');  
+  const [content, setContent] = useState('');  
+  const [selectedLog, setSelectedLog] = useState(null); 
+  const [isModalOpen, setIsModalOpen] = useState(false); 
 
-  // 날짜 변경 함수
   const changeDate = (direction) => {
     setCurrentDate((prevDate) => {
       const newDate = new Date(prevDate);
-      newDate.setDate(newDate.getDate() + direction); // 하루씩 이동
+      newDate.setDate(newDate.getDate() + direction);
       return newDate;
     });
   };
 
   const handleDateChange = (e) => {
-    const selectedDate = new Date(e.target.value); // Date 객체로 변환
+    const selectedDate = new Date(e.target.value);
     setCurrentDate(selectedDate);
   };
 
-  // 로그 남기기 처리 함수
   const handleSubmit = (e) => {
     e.preventDefault();
-    const dateString = currentDate.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 변환
+    const dateString = currentDate.toISOString().split('T')[0];
     if (dateString && title && content) {
       const newLog = { title, content };
       setLogs((prevLogs) => ({
         ...prevLogs,
         [dateString]: [...(prevLogs[dateString] || []), newLog],
       }));
-      setTitle('');  // 입력 필드 초기화
+      setTitle('');  
       setContent('');
-      setIsModalOpen(false); // 로그 저장 후 모달 닫기
+      setIsModalOpen(false);
     }
   };
 
-  // 로그 카드 클릭 처리 함수
   const handleCardClick = (log) => {
-    setSelectedLog(log); // 클릭한 로그를 모달에 설정
+    setSelectedLog(log);
   };
 
-  // 모달 닫기 함수
   const closeModal = () => {
-    setSelectedLog(null); // 모달 닫기
+    setSelectedLog(null);
   };
 
-  // 로그 제목의 일부만 표시하는 함수 (미리보기)
   const getPreviewTitle = (title) => {
-  const maxLength = 10;  // 제목 미리보기로 표시할 글자 수 제한
-  return title.length > maxLength ? title.substring(0, maxLength) + '..' : title;
+    const maxLength = 10;  
+    return title.length > maxLength ? title.substring(0, maxLength) + '..' : title;
   };
 
-  // 로그 내용의 일부만 표시하는 함수 (미리보기)
   const getPreviewContent = (content) => {
-  const maxLength = 50;  // 미리보기로 표시할 글자 수 제한
-  return content.length > maxLength ? content.substring(0, maxLength) + '...' : content;
+    const maxLength = 50;  
+    return content.length > maxLength ? content.substring(0, maxLength) + '...' : content;
   };
-
-  
 
   return (
     <div className="dailyLog">
       <div className="dailyLog-header">
         <div>
           <h2>SW 프로젝트팀</h2>
-          <h3>{selectedChannel}</h3>  {/* 선택된 채널 표시 */}
+          <h3>{selectedChannel}</h3>
         </div>
       </div>
       <div className="daily-log-container">
@@ -78,8 +74,8 @@ const DailyLog = () => {
           <button onClick={() => changeDate(-1)}>◀</button>
           <input 
             name="date"
-            type="date" // datetime-local 대신 date 사용
-            value={currentDate.toISOString().split('T')[0]} // YYYY-MM-DD 형식으로 변환
+            type="date" 
+            value={currentDate.toISOString().split('T')[0]}
             onChange={handleDateChange} 
           />
           <button onClick={() => changeDate(1)}>▶</button>
@@ -89,18 +85,17 @@ const DailyLog = () => {
 
         <div className="log-card-container">
           {Object.entries(logs)
-            .filter(([date]) => date === currentDate.toISOString().split('T')[0]) // 현재 선택된 날짜의 로그만 필터링
+            .filter(([date]) => date === currentDate.toISOString().split('T')[0])
             .flatMap(([date, logsByDate]) => 
               logsByDate.map((log, index) => (
                 <div className="log-card" key={`${date}-${index}`} onClick={() => handleCardClick(log)}>
-                  <strong>{getPreviewTitle(log.title)}</strong> {/* 제목 미리보기로 제한 */}
-                  <p>{getPreviewContent(log.content)}</p> {/* 내용 일부만 표시 */}
+                  <strong>{getPreviewTitle(log.title)}</strong>
+                  <p>{getPreviewContent(log.content)}</p>
                 </div>
               ))
             )}
         </div>
 
-        {/* 로그 작성 모달 */}
         {isModalOpen && (
           <div className="modal">
             <div className="modal-content">
@@ -126,7 +121,6 @@ const DailyLog = () => {
           </div>
         )}
 
-        {/* 선택된 로그 보기 모달 */}
         {selectedLog && (
           <div className="modal">
             <div className="modal-content">
@@ -136,7 +130,7 @@ const DailyLog = () => {
             </div>
           </div>
         )}
-        </div>
+      </div>
     </div>
   );
 };

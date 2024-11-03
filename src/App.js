@@ -21,7 +21,8 @@ import Home from './components/Main/Home';
 import Notice from './components/StudyGroup/Notice';
 import NoticeDetails from './components/StudyGroup/NoticeDetails';
 import StudyGroupChat from './components/StudyGroup/StudyGroupChat';
-import Calender from './components/StudyGroup/Calendar'
+import Calender from './components/StudyGroup/Calendar';
+import Team from './components/StudyGroup/Team';
 import Header from './components/ReusableComponents/Header';
 import Footer from './components/ReusableComponents/Footer';
 import FAQ from './components/ReusableComponents/FAQ'; 
@@ -59,6 +60,7 @@ function App() {
       <Route path='/StudyGroup/Notice' element={<Notice />} />  {/*공지사항 목록 페이지*/}
       <Route path='/StudyGroup/NoticeDetails' element={<NoticeDetails />} />  {/*공지사항 세부내용 페이지*/}
       <Route path='/StudyGroup/DailyLog' element={<DailyLog />} />
+      <Route path='/StudyGroup/Team' element={<Team />} />
       </Routes>
     </div>
     <Footer />
