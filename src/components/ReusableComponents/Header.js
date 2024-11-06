@@ -64,13 +64,16 @@ function Header() {
         {isLoggedIn ? (
           <>
             {/* 로그인 후 화면 */}
+          <div className="profile-container">
             <img
-              src={profileImage}
-              alt="profile-image"
-              className="header-profile-image"
-              onClick={handleImageClick}
-            /> 
-            <button onClick={handleLogout} className='logout-button'>로그아웃</button>
+            src={profileImage}
+            alt="profile-image"
+            className="header-profile-image"
+            onClick={handleImageClick}
+          /> 
+          <span className="hover-text">마이페이지로 이동</span>
+          </div>
+          <button onClick={handleLogout} className='logout-button'>로그아웃</button>
           </>
         ) : (
           <>

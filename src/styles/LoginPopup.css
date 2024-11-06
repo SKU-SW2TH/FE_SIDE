@@ -138,7 +138,7 @@
     margin-bottom: -3px;
     width: 40px;
     height: 40px;
-    border-radius: 30px;
+    border-radius: 50%;
     cursor: pointer;
   }
 
@@ -154,3 +154,27 @@
     margin-left: 40px;
   }
   
+  .profile-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .profile-container:hover .hover-text {
+    opacity: 1;
+  }
+
+  .hover-text {
+    position: absolute;
+    bottom: -20px; /* 이미지의 아래쪽에 문구 위치 */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.7); /* 배경색과 투명도 */
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    opacity: 0; /* 기본적으로 보이지 않게 설정 */
+    transition: opacity 0.3s;
+    white-space: nowrap; /* 문구가 줄바꿈되지 않도록 설정 */
+    pointer-events: none; /* 문구에 포인터가 가지 않게 설정 */
+  }
