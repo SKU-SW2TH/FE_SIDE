@@ -15,6 +15,12 @@
     margin-left: 50px;
 }
 
+.find-submit-form-nickname {
+    display: relative;
+    margin-top: 11px;
+    margin-left: 33px;
+}
+
 .verify-button {
     height: 40px;
     margin-left: 10px;
@@ -50,6 +56,17 @@
     border: 1px solid #d3d2d2;
     margin-left: 20px;
 }
+
+#nickname{
+    width: 300px;
+    height: 50px;
+    padding: 18px;
+    font-size: 17px;
+    border-radius: 8px;
+    border: 1px solid #d3d2d2;
+    margin-left: 20px;
+}
+
 
 #email-code-input {
     width: 300px;
@@ -253,7 +270,7 @@
     border-radius: 3px; /* 모서리 둥글게 */
     margin-right: 5px;
     border: none;
-    background-color: #58c079;
+    background-color: #57c179;
     font-size: 17px; /* 폰트 크기 */
     cursor: pointer; /* 커서 모양 변경 */
     transition: background-color 0.3s; /* 배경색 변화에 애니메이션 추가 */    

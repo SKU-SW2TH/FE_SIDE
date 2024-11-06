@@ -9,11 +9,11 @@ import MyPageStudy from './components/MyPage/MyPageStudy';
 import MyPageQuestion from './components/MyPage/MyPageQuestion';
 import MyPageFree from './components/MyPage/MyPageFree';
 import EditNotification from './components/MyPage/EditNotification';
+import Interest from './components/MyPage/Interest';
+import Notification from './components/MyPage/Notification';
 import LoginPopup from './components/MyPage/LoginPopup';
 import FindPassword from './components/MyPage/FindPassword';
 import SignUp from './components/MyPage/SignUp';
-import EditEmail from './components/MyPage/EditEmail';
-import WriteIntroduce from './components/MyPage/WriteIntroduce';
 import Home from './components/Main/Home';
 import Notice from './components/StudyGroup/Notice';
 import NoticeDetails from './components/StudyGroup/NoticeDetails';
@@ -36,6 +36,7 @@ function App() {
     // 추가적인 게시글들...
   ]);
 
+  
 
   return(
   <BrowserRouter>
@@ -54,11 +55,11 @@ function App() {
       <Route path='/find-password' element={<FindPassword/>}/>
       <Route path='/signup' element={<SignUp/>}/>
       <Route path='/edit-notification' element={<EditNotification/>}/>
+      <Route path='/notification' element={<Notification/>}/>
       <Route path='/free' element={<CommunityFree/>}/>
+      <Route path='/interest' element={<Interest/>}/>
       <Route path='/gathering' element={<CommunityGathering/>}/>  
       <Route path='/question' element={<CommunityQuestion/>}/>
-      <Route path='/edit-email' element={<EditEmail/>}/>
-      <Route path='/write-introduce' element={<WriteIntroduce/>}/>
        {/*브라우저에서 path에 따라 element가 렌더링된다*/ }
       <Route path='/StudyGroup' element={<StudyGroup />} />
       <Route path='/StudyGroup/Calendar' element={<Calender />} />

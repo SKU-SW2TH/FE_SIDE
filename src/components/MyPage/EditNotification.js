@@ -1,5 +1,5 @@
 import React from "react";
-import EditProfileSideNav from "./MyPageSideNav";
+import MyPageSideNav from "./MyPageSideNav";
 import '../../styles/MyPage.css';
 import ToggleSwitch from "../ReusableComponents/ToggleSwitch";
 
@@ -7,7 +7,7 @@ function EditNotification() {
     return(
         <div>
             <div className='container'>
-                <EditProfileSideNav userName="박범준" profileImage="img/image.png" />
+                <MyPageSideNav/>
             <div className="grid-contatiner">
                 <label className="noti-title01">
                     <p className="notification-maintitle">알림 설정</p>

@@ -1,12 +1,10 @@
 import React from "react";
 import "../../styles/MyPage.css"
 import { Link } from 'react-router-dom';
-import MyPageSideNav from '../ReusableComponents/MyPageSideNav';
 
 function MyPageQuestion() {
     return(
     <div className='container'>
-        <MyPageSideNav userName="박범준" profileImage="img/image.png" />
         <div>
         <p className='introduce-header'>질문 게시글</p>
         <Link className="btn-link" to="/edit-profile"><button className='write'>질문 게시판 둘러보기</button></Link>

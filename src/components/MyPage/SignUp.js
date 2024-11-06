@@ -2,14 +2,18 @@ import React, { useState } from "react";
 import "../../styles/FindPage.css";
 import eye from "../../assets/images/eye.png";
 import closedeye from "../../assets/images/closedeye.png";
+import axios from 'axios';
 
 function SignUp() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [nickname, setNickname] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
     const [emailError, setEmailError] = useState("");
     const [isEmailTouched, setIsEmailTouched] = useState(false);
-    const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [passwordMatchError, setPasswordMatchError] = useState("");
     const [isLengthValid, setIsLengthValid] = useState(false);
@@ -39,6 +43,44 @@ function SignUp() {
             }
         }
     };
+
+    const handleSignup = async (e) => {
+        e.preventDefault(); // 기본 동작 방지
+    
+        try {
+          // 요청 데이터 준비
+          const requestData = {
+            email: email,
+            password: password,
+            nickname: nickname
+          };
+    
+          // Axios를 사용한 POST 요청
+          const response = await axios.post(
+            'http://ec2-3-39-85-170.ap-northeast-2.compute.amazonaws.com:8080/api/auth/signup',
+            requestData
+          );
+    
+          if (response.status === 200) {
+            setSuccessMessage('회원가입에 성공했습니다!');
+            // 성공 시 추가 처리
+          }
+        } catch (error) {
+          if (error.response) {
+            // 서버가 상태 코드를 반환한 경우
+            if (error.response.status === 409) {
+                setErrorMessage('이미 사용 중인 이메일입니다.');
+            } else if (error.response.status === 500) {
+                setErrorMessage('예기치 못한 오류가 발생했습니다.');
+            } else {
+                setErrorMessage(`오류가 발생했습니다: ${error.response.status}`);
+            }
+          } else {
+            // 요청이 전송되지 않았거나 기타 오류
+            setErrorMessage('요청을 처리할 수 없습니다. 네트워크를 확인해주세요.');
+          }
+        }
+      };
 
     const handleEmailBlur = () => {
         setIsEmailTouched(true);
@@ -101,7 +143,7 @@ function SignUp() {
                 <p className="signup-email">이메일</p>
                 <div className="find-submit-form-email">
                     <input
-                        type="text"
+                        type="email"
                         id="email"
                         placeholder="example@naver.com"
                         value={email}
@@ -134,8 +176,9 @@ function SignUp() {
                 </div>
 
                 <p className="signup-nickname">닉네임</p>
-                <div className="find-submit-form">
-                    <input type="text" id="phone" placeholder="홍길동" />
+                <div className="find-submit-form-nickname">
+                    <input type="text" id="nickname" placeholder="홍길동" />
+                    <button className="verify-button">중복확인</button>
                 </div>
                 <div className="password-info">
                     <div className="password-info01">
