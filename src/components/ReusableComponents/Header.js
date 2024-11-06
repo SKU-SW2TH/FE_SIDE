@@ -71,7 +71,7 @@ function Header() {
             className="header-profile-image"
             onClick={handleImageClick}
           /> 
-          <span className="hover-text">마이페이지로 이동</span>
+          <span className="hover-text">마이페이지</span>
           </div>
           <button onClick={handleLogout} className='logout-button'>로그아웃</button>
           </>

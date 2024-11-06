@@ -62,8 +62,15 @@ function LoginPopup({ closePopup, onLoginSuccess }) {
               navigate('/');
             });
           }
-      } else {
-        console.error('로그인 오류:', error);
+      } else if (error.response && error.response.status === 401) {
+        setErrorMessage("✗ 회원가입된 이메일이 없습니다.");
+        console.log('Error Message Updated: 회원가입x');
+      } else if (error.response && error.response.status === 403) {
+        setErrorMessage("✗ 비활성화된 계정입니다. 관리자에 문의하세요.");
+        console.log('Error Message Updated: 비활성화 계정');
+      } else if (error.response && error.response.status === 500) {
+        setErrorMessage("✗ 서버에 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+        console.log('Error Message Updated: 서버문제');
       }
     }
   };
