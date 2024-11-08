@@ -31,15 +31,22 @@ const useCheckTokenValidity = () => {
         else if (error.response && error.response.status === 500) {
           try {
             const refreshToken = localStorage.getItem('refreshToken');
-            const res = await axios.post('http://ec2-3-39-85-170.ap-northeast-2.compute.amazonaws.com:8080/api/auth/reissue', { refreshToken });
+            const res = await axios.post('http://ec2-3-39-85-170.ap-northeast-2.compute.amazonaws.com:8080/api/auth/reissue', 
+              { refreshToken: refreshToken },
+              {
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+            });
             
             // 새로운 accessToken이 성공적으로 발급된 경우
             if (res.data && res.data.accessToken) {
               localStorage.setItem('accessToken', res.data.accessToken);
               localStorage.setItem('refreshToken', res.data.refreshToken);
+              console.log("token 재발급 완료");
               setIsTokenValid(true); // 새 토큰 발급 후 유효한 것으로 설정
             } else {
-              throw new Error("Token 재발급 실패");
+              setIsTokenValid(false);
             }
           } catch {
             localStorage.removeItem('accessToken');

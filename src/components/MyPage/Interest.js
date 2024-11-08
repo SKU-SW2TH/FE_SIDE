@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { useEffect } from "react";
 import styled from "styled-components";
 import MyPageSideNav from "./MyPageSideNav"; 
 import InterestCategory from './InterestCategory'; 
 import SelectedInterest from './SelectedInterest'; // SelectedInterest import
+import useCheckTokenValidity from "../ReusableComponents/useCheckTokenValidity";
+import { useNavigate } from "react-router-dom";
 
 const PageContainer = styled.div`
     display: grid;
@@ -74,6 +77,9 @@ const AddCategoryButton = styled.div`
 `;
 
 function Interest() {
+    const isTokenValid = useCheckTokenValidity();
+    const navigate = useNavigate();
+
     const [selectedItems, setSelectedItems] = useState({
         프론트: [],
         백엔드: [],
@@ -81,6 +87,13 @@ function Interest() {
     });
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    useEffect(() => {
+        if (isTokenValid === false) {
+            alert("로그인후 이용해주세요.");
+            navigate('/');
+        }
+    }, [isTokenValid, navigate]);
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
@@ -102,6 +115,10 @@ function Interest() {
         });
     };
 
+    if (!isTokenValid) {
+        return null; // 토큰이 유효하지 않으면 렌더링하지 않음
+    }
+    
     return (
         <div>
             <PageContainer>

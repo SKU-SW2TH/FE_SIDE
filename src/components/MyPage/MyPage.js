@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { useEffect } from "react";
 import MyPageSideNav from "./MyPageSideNav";
 import '../../styles/MyPage.css';
 import PasswordModal from './PasswordModal';
 import AccountDeletionModal from './AccountDeletionModal'; 
+import { useEffect } from "react";
 import useCheckTokenValidity from "../ReusableComponents/useCheckTokenValidity";
 import { useNavigate } from "react-router-dom";
-import profileImage from '../../assets/images/image.png';
+import neko from '../../assets/images/neko.png';
 
 function MyPage({ initialUserName, profileImage, userId }) {
   const [userName, setUserName] = useState(initialUserName || "박범준");
@@ -17,16 +17,16 @@ function MyPage({ initialUserName, profileImage, userId }) {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const fixedUserId = "bj10111@naver.com";
   const isTokenValid = useCheckTokenValidity();
   const navigate = useNavigate();
-  const fixedUserId = "bj10111@naver.com";
 
   useEffect(() => {
     if (isTokenValid === false) {
       navigate('/');
-      console.log(isTokenValid);
     }
   }, [isTokenValid, navigate]);
+
 
   if (!isTokenValid) {
     return null; // 유효하지 않으면 MyPage 컴포넌트 렌더링 중단
@@ -86,7 +86,7 @@ function MyPage({ initialUserName, profileImage, userId }) {
           <div className="grid-item01-forsave">
             <p className="grid-title">내 프로필</p>
             <div className="grid-subtitle-image">
-              이미지 <img className="profileImage-edit" src={profileImage} alt="Profile" />
+              이미지 <img className="profileImage-edit" src={neko} alt="Profile" />
               <button className="changeButton">변경</button>
               <div className="image-text">
                 <p>✓ png, jpg, jpeg의 확장자</p>

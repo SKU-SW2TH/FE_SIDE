@@ -4,6 +4,8 @@ import NotificationList from './NotificationList';
 import styled from 'styled-components';
 import MyPageSideNav from './MyPageSideNav'; // MyPageSideNav import
 import neko from '../../assets/images/neko.png';
+import useCheckTokenValidity from "../ReusableComponents/useCheckTokenValidity";
+import { useNavigate } from "react-router-dom";
 
 const PageContainer = styled.div`
     display: grid;
@@ -55,12 +57,29 @@ function Interest() {
     //     .catch((error) => console.error('Error fetching notifications:', error));
     // }, []);
 
+
+    const isTokenValid = useCheckTokenValidity();
+    const navigate = useNavigate();
+
+
     const [notifications, setNotifications] = useState([
         { id: 1, type: 'comment-reply', name: 'ggdaero99', date: '1일전' },
         { id: 2, type: 'comment-like', name: 'ggdaero99', date: '1일전' },
         { id: 3, type: 'article-reply', name: 'ggdaero99', date: '3일전' },
         { id: 4, type: 'article-like', name: 'ggdaero99', date: '2일전' },
     ]);
+    
+    useEffect(() => {
+        if (isTokenValid === false) {
+            alert("로그인후 이용해주세요.");
+            navigate('/');
+        }
+      }, [isTokenValid, navigate]);
+    
+    
+    if (!isTokenValid) {
+        return null; // 유효하지 않으면 MyPage 컴포넌트 렌더링 중단
+    }
 
     return (
         <PageContainer>
