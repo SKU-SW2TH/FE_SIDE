@@ -1,4 +1,3 @@
-// App.js
 import React from 'react';
 import '../../styles/Home.css';
 import Hero from '../StudyGroup/Hero';
@@ -9,7 +8,6 @@ import CTA from './CTA';
 function App() {
   return (
     <div className="App">
-      
       <main className="App-main">
         <Hero />
         
@@ -29,7 +27,6 @@ function App() {
           <CTA></CTA>
         </section>
       </main>
-
     </div>
   );
 }

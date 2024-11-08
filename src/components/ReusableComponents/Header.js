@@ -35,6 +35,7 @@ function Header() {
   const handleLogout = () => {
     // 로그아웃 시 `localStorage`에서 토큰 삭제 후 상태 초기화
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
     setIsLoggedIn(false);
   };
   

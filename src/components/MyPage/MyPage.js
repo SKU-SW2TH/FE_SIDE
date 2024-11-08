@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import MyPageSideNav from "./MyPageSideNav";
 import '../../styles/MyPage.css';
 import PasswordModal from './PasswordModal';
 import AccountDeletionModal from './AccountDeletionModal'; 
+import useCheckTokenValidity from "../ReusableComponents/useCheckTokenValidity";
+import { useNavigate } from "react-router-dom";
 import profileImage from '../../assets/images/image.png';
 
 function MyPage({ initialUserName, profileImage, userId }) {
@@ -14,8 +17,20 @@ function MyPage({ initialUserName, profileImage, userId }) {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
+  const isTokenValid = useCheckTokenValidity();
+  const navigate = useNavigate();
   const fixedUserId = "bj10111@naver.com";
+
+  useEffect(() => {
+    if (isTokenValid === false) {
+      navigate('/');
+      console.log(isTokenValid);
+    }
+  }, [isTokenValid, navigate]);
+
+  if (!isTokenValid) {
+    return null; // 유효하지 않으면 MyPage 컴포넌트 렌더링 중단
+  }
 
   // 프로필 편집 핸들러
   const handleEditProfile = () => {
@@ -50,11 +65,6 @@ function MyPage({ initialUserName, profileImage, userId }) {
     setNewPassword("");
     setConfirmPassword("");
     setPasswordModalOpen(false); // 모달 닫기
-  };
-
-  // 탈퇴 모달 핸들러
-  const handleOpenDeletionModal = () => {
-    setDeletionModalOpen(true);
   };
 
   const handleCloseDeletionModal = () => {
@@ -177,8 +187,8 @@ function MyPage({ initialUserName, profileImage, userId }) {
         setConfirmPassword={setConfirmPassword}
         onSubmit={handleChangePassword}
       />
-    </div>
-  );
+    </div>  
+  ); 
 }
 
 export default MyPage;
