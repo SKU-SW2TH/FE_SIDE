@@ -42,7 +42,7 @@
 .password-info-emailerror {
     font-size: 13px;
     text-align: left;
-    margin-left: 664px;
+    margin-left: 388px;
     color: #999;
     margin-top: 10px;
 }
@@ -305,4 +305,49 @@ input[type="number"] {
 .confirm-button {
     margin-top: 40px;
     margin-right: 30px;
+}
+
+.send-email-success {
+    color: #57c179;
+    font-size: 13px;
+}
+
+.password-info-email-success {
+    margin-right: 75px;
+}
+
+.password-info-emailcode-error {
+    margin-left: 667px;
+}
+
+.password-info-emailcode-success {
+    margin-top: 5px;
+    margin-right: 155px;
+}
+
+.nickname-success-message {
+    font-size: 13px;
+    color: #57c179;
+    margin-top: 5px;
+    margin-right: 215px;
+}
+
+.nickname-error-message {
+    font-size: 13px;
+    color: red;
+    margin-top: 5px;
+    margin-left: 635px;
+}
+
+.password-info-emailerror {
+    margin-left: 667px;
+}
+
+.nickname-info-p {
+    font-size: 13px;
+    color: #999;
+}
+
+.nickname-info {
+    margin-right: 215px;
 }

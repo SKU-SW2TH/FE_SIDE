@@ -1,56 +1,67 @@
+// FreePostForm.js
 import React, { useState } from 'react';
 import CommunitySideNav from './CommunitySideNav';
-import '../../styles/FreePostForm.css'; // 스타일 파일
+import '../../styles/FreePostForm.css';
+import EditorComponent from './EditorComponent';
 
 function FreePostForm({ addPost }) {
-  const [title, setTitle] = useState(''); // 제목 상태
-  const [content, setContent] = useState(''); // 내용 상태
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (title.trim() && content.trim()) {
-      addPost({ title, content }); // 부모 컴포넌트로 데이터 전달
-      setTitle(''); // 입력 필드 초기화
-      setContent('');
-    } else {
-      alert('제목과 내용을 입력하세요.');
-    }
-  };
+    // 부모 컴포넌트로 Markdown 데이터를 전달하는 함수
+    const handleContentChange = (markdown) => {
+        setContent(markdown);  // 작성된 Markdown을 state에 저장
+    };
 
-  return (
-    <div className='container'>
-      <CommunitySideNav userName="박범준" profileImage="img/image.png" />
-    <div className="post-form-container">
-      <p className='free-post-title'>자유 게시글 작성</p>
-      <form onSubmit={handleSubmit} className="post-form">
-        <div className="form-group">
-          <label htmlFor="title">제목</label>
-          <input
-            type="text"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="제목을 입력하세요"
-            required
-          />
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (title.trim() && content.trim()) {
+            addPost({ title, content });
+            setTitle('');
+            setContent('');
+        } else {
+            alert('제목과 내용을 입력하세요.');
+        }
+    };
+
+    // 이미지 업로드 로직 (로컬 파일 사용 예시)
+    const getImage = async (file) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        // 실제 서버와 연결된 경우, URL을 반환
+        return URL.createObjectURL(file);  // 로컬에서만 사용할 경우
+    };
+
+    return (
+        <div className="container">
+            <CommunitySideNav userName="박범준" profileImage="img/image.png" />
+            <div className="post-form-container">
+                <p className="free-post-title">자유 게시글 작성</p>
+                <form onSubmit={handleSubmit} className="post-form">
+                    <div className="form-group">
+                        <label htmlFor="title">제목</label>
+                        <input
+                            type="text"
+                            id="title"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            placeholder="제목을 입력하세요"
+                            required
+                        />
+                    </div>
+                    <div className="form-group" style={{ width: '1300px' }}>
+                        <label htmlFor="content">내용</label>
+                        <EditorComponent handleImageUpload={getImage} onSave={handleContentChange} />
+                    </div>
+                </form>
+                <div>
+                    <h3>Markdown Preview:</h3>
+                    <pre>{content}</pre>  {/* Markdown 내용 출력 */}
+                </div>
+            </div>
         </div>
-        <div>
-        </div>
-        <div className="form-group">
-          <label htmlFor="content">내용</label>
-          <textarea
-            id="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="내용을 입력하세요"
-            required
-          />
-        </div>
-        <button type="submit" className="submit-button">게시글 작성</button>
-      </form>
-    </div>
-    </div>
-  );
+    );
 }
 
 export default FreePostForm;
