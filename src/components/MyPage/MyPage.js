@@ -24,6 +24,7 @@ function MyPage({ initialUserName, profileImage, userId }) {
   useEffect(() => {
     if (isTokenValid === false) {
       alert("로그인후 이용해주세요.");
+      console.log(isTokenValid);
       navigate('/');
     }
   }, [isTokenValid, navigate]);

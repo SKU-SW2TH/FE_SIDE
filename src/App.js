@@ -16,6 +16,7 @@ import FindPassword from './components/MyPage/FindPassword';
 import SignUp from './components/MyPage/SignUp';
 import Home from './components/Main/Home';
 import Notice from './components/StudyGroup/Notice';
+import ResetPassword from './components/MyPage/ResetPassword';
 import NoticeDetails from './components/StudyGroup/NoticeDetails';
 import StudyGroup from './components/StudyGroup/StudyGroup';
 import Calender from './components/StudyGroup/Calendar'
@@ -54,6 +55,7 @@ function App() {
       <Route path='/mypage-study' element={<MyPageStudy/>}/>
       <Route path='/find-password' element={<FindPassword/>}/>
       <Route path='/signup' element={<SignUp/>}/>
+      <Route path='/reset-password' element={<ResetPassword/>}/>
       <Route path='/edit-notification' element={<EditNotification/>}/>
       <Route path='/notification' element={<Notification/>}/>
       <Route path='/free' element={<CommunityFree/>}/>

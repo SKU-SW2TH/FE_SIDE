@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 const useCheckTokenValidity = () => {
-  const [isTokenValid, setIsTokenValid] = useState(true);
+  const [isTokenValid, setIsTokenValid] = useState(false);
 
   useEffect(() => {
     const checkTokenValidity = async () => {

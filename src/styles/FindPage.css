@@ -24,12 +24,12 @@
 .verify-button {
     height: 40px;
     margin-left: 10px;
-    padding: 3px 10px;
+    padding: 1px 3px;
     cursor: pointer;
     background-color: white; /* 배경색 */
     color: black; /* 텍스트 색상 */
-    border-radius: 5px; /* 모서리 둥글게 */
-    border-width: 0.5px;
+    border-radius: 10px; /* 모서리 둥글게 */
+    border: 0.1px solid #999;
     font-size: 15px; /* 폰트 크기 */
     cursor: pointer; /* 커서 모양 변경 */  
 }
@@ -276,6 +276,11 @@
     transition: background-color 0.3s; /* 배경색 변화에 애니메이션 추가 */    
   }
 
+
+  #confirm:hover {
+    background-color: #4fb16fee;
+  }
+
   .find-password-subtitle-form {
     margin-top: 40px;
     margin-left: 25px;
@@ -350,4 +355,85 @@ input[type="number"] {
 
 .nickname-info {
     margin-right: 215px;
+}
+
+
+.find-password-success-message {
+    color: #57c179;
+    font-size: 13px;
+    margin-top: 5px;
+    margin-right: 60px;
+}
+
+.find-password-error-message {
+    font-size: 13px;
+    color: red;
+    margin-top: 5px;
+    margin-right: 130px;
+}
+
+
+.reset-password-title {
+    text-align: center;
+    margin-top: 90px;
+}
+.reset-password-subtitle {
+    text-align: center;
+    margin-top: 5px;
+}
+
+.find-password-title, .reset-password-title-p {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.reset-form {
+    text-align: center;
+    margin-left: 30px;
+}
+
+.newpwd-form {
+    text-align: center;
+    margin-right: 220px;
+    margin-top: 30px;
+}
+
+.confirm-form {
+    text-align: center;
+    margin-right: 210px;
+    margin-top: 30px;
+}
+
+
+.resetpwd-button-form {
+    text-align: center;
+}
+
+#resetbutton {
+    margin-top: 30px;
+    width: 300px;
+    height: 50px;
+    cursor: pointer;
+    color: white; /* 텍스트 색상 */
+    font-weight: bold;
+    border-radius: 3px; /* 모서리 둥글게 */
+    margin-right: 5px;
+    border: none;
+    background-color: #57c179;
+    font-size: 17px; /* 폰트 크기 */
+    cursor: pointer; /* 커서 모양 변경 */
+    transition: background-color 0.3s; /* 배경색 변화에 애니메이션 추가 */    
+}
+
+#resetbutton:hover {
+    background-color: #4fb16fee;
+}
+
+
+.reset-info {
+    font-size: 16px;
+}
+
+.reset-error {
+    margin-left: 695px;
 }

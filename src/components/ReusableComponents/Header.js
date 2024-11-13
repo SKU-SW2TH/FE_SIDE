@@ -6,6 +6,7 @@ import logo from '../../assets/images/headerlogo.png';
 import LoginPopup from "../MyPage/LoginPopup";
 import "../../styles/LoginPopup.css";
 import profileImage from '../../assets/images/image.png';
+import axios from 'axios';
 
 function Header() {
   const [isPopupOpen, setPopupOpen] = useState(false);
@@ -32,11 +33,35 @@ function Header() {
     setPopupOpen(false);
   };
   
-  const handleLogout = () => {
-    // 로그아웃 시 `localStorage`에서 토큰 삭제 후 상태 초기화
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    setIsLoggedIn(false);
+  const handleLogout = async (e) => {
+    e.preventDefault();
+
+    const token = localStorage.getItem('refreshToken');
+
+    try {
+        const response = await axios.post(
+            'http://ec2-3-39-85-170.ap-northeast-2.compute.amazonaws.com:8080/api/auth/logout',
+            {
+              refreshToken: token  // refreshToken이라는 키로 token 값을 전송
+            }
+        );
+
+        if (response.status === 200) {
+            // 로그아웃 시 `localStorage`에서 토큰 삭제 후 상태 초기화
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            console.log(response.status);
+            setIsLoggedIn(false);
+            navigate('/');
+        }
+    } catch (error) {
+        if (error.response) {
+            if (error.response.status === 500) {
+              alert("서버 에러가 발생했습니다.");
+              console.log(error.response.status);
+            } 
+        }
+    }
   };
   
   const handleLoginSuccess = () => {
