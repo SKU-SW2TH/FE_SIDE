@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MyPageSideNav from "./MyPageSideNav";
 import '../../styles/MyPage.css';
 import PasswordModal from './PasswordModal';
 import AccountDeletionModal from './AccountDeletionModal'; 
-import { useEffect } from "react";
-import useCheckTokenValidity from "../ReusableComponents/useCheckTokenValidity";
-import { useNavigate } from "react-router-dom";
 import neko from '../../assets/images/neko.png';
+import { useNavigate } from "react-router-dom";
 
 function MyPage({ initialUserName, profileImage, userId }) {
   const [userName, setUserName] = useState(initialUserName || "박범준");
@@ -18,20 +16,24 @@ function MyPage({ initialUserName, profileImage, userId }) {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const fixedUserId = "bj10111@naver.com";
-  const isTokenValid = useCheckTokenValidity();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true); 
 
   useEffect(() => {
-    if (isTokenValid === false) {
-      alert("로그인후 이용해주세요.");
-      console.log(isTokenValid);
-      navigate('/');
+    // localStorage에서 resetToken 가져오기
+    const accessToken = localStorage.getItem('accessToken');
+    
+    if (!accessToken) {
+      console.log("accessToken 필요")
+        navigate('/');
+    } else {
+      setIsLoading(false); // 토큰이 있으면 로딩 상태 해제
     }
-  }, [isTokenValid, navigate]);
+  }, [navigate]);
 
-
-  if (!isTokenValid) {
-    return null; // 유효하지 않으면 MyPage 컴포넌트 렌더링 중단
+  if (isLoading) {
+    // 로딩 중일 때 화면 표시 방지
+    return null;
   }
 
   // 프로필 편집 핸들러

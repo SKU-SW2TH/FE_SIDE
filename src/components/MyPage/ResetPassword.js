@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import NotificationModal from './NotificationModal';
 
@@ -7,18 +6,16 @@ function ResetPasswordPage() {
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const [notification, setNotification] = useState('');  // 알림 메시지 상태
-
-    const navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false);
+    const [modalContent, setModalContent] = useState("");
 
     useEffect(() => {
         // localStorage에서 resetToken 가져오기
         const resetToken = localStorage.getItem('resetToken');
         
-        // resetToken이 없으면 유효하지 않은 페이지로 리다이렉트
         if (!resetToken) {
-            showNotification("비밀번호 재설정 메일을 받아서 처리해 주시기 바랍니다.");
-            navigate('/');
+            setModalContent("비밀번호 재설정 메일을 받아서 처리해 주시기 바랍니다.");
+            setShowModal(true);
             return;
         }
 
@@ -26,14 +23,6 @@ function ResetPasswordPage() {
         validateResetToken(resetToken);
     }, []);
 
-    const showNotification = (message) => {
-        console.log('알림 메시지:', message);  // 메시지 확인
-        setNotification(message);
-    };
-
-    useEffect(() => {
-        console.log('notification 값 변경됨:', notification);
-    }, [notification]);    
 
     useEffect(() => {
         // 비밀번호 실시간 확인
@@ -64,13 +53,13 @@ function ResetPasswordPage() {
             if (response.status === 200) {
                 console.log(response.status);
             } else {
-                showNotification("오류가 발생했습니다.");
+                setModalContent("오류가 발생했습니다.");
+                setShowModal(true);
                 console.log(response.status);
-                navigate('/');
             }
         } catch (error) {
-            showNotification("오류가 발생했습니다.");
-            navigate('/');
+            setModalContent("오류가 발생했습니다.");
+            setShowModal(true);
         }
     };
 
@@ -82,7 +71,6 @@ function ResetPasswordPage() {
         
         if (!resetToken) {
             setErrorMessage('✗ 유효한 링크가 아닙니다.');
-            navigate('/');
             return;
         }
 
@@ -100,11 +88,10 @@ function ResetPasswordPage() {
             );
 
             if (response.status === 200) {
-                showNotification('비밀번호가 성공적으로 변경되었습니다.');
+                setModalContent('비밀번호가 성공적으로 변경되었습니다.');
+                setShowModal(true);
                 localStorage.removeItem('resetToken');  // 토큰 삭제
-                console.log(notification);
                 console.log(response.status);
-                navigate('/');
             }
         } catch (error) {
             if(error.response.status === 400) {
@@ -119,6 +106,9 @@ function ResetPasswordPage() {
 
     return (
         <div className="reset-password-container">
+            {showModal && (
+                <NotificationModal content={modalContent} onClose={() => setShowModal(false)} />
+            )}
             <div className='reset-password-title'>
                 <h1 className='reset-password-title-p'>비밀번호 재설정</h1>
             </div>
@@ -162,7 +152,6 @@ function ResetPasswordPage() {
                     <button id="resetbutton" type="submit">비밀번호 재설정</button>
                 </div>
             </form>
-            {notification && <NotificationModal message={notification} onClose={() => setNotification('')} />}
     </div>
 );
 }

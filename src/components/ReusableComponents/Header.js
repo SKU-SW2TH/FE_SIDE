@@ -11,6 +11,7 @@ import axios from 'axios';
 function Header() {
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isTokenValid, setIsTokenValid] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,8 +22,56 @@ function Header() {
     }
   }, []);  // 한 번만 실행, 즉 페이지 렌더링 시
 
-  const handleImageClick = () => {
-    navigate('/mypage'); // 이동할 페이지 경로
+  const handleLinkClick = async () => {
+    const token = localStorage.getItem('accessToken');
+
+    try {
+      const response = await axios.get('http://ec2-3-39-85-170.ap-northeast-2.compute.amazonaws.com:8080/api/member/notificationList', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.status === 200) {
+        setIsTokenValid(true); // 토큰이 유효하면 true로 설정
+        console.log("콘솔로그:" + response.status);
+        console.log(isTokenValid);
+      } 
+    } catch (error) {
+      // 인증 오류 처리
+      if (error.response && (error.response.status === 401 || error.response.status === 400)) {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        setIsTokenValid(false);
+      } 
+      // 서버 오류 시 refreshToken 재발급 시도
+      else if (error.response && error.response.status === 500) {
+        try {
+          const refreshToken = localStorage.getItem('refreshToken');
+          const res = await axios.post('http://ec2-3-39-85-170.ap-northeast-2.compute.amazonaws.com:8080/api/auth/reissue', 
+            { refreshToken: refreshToken },
+            {
+              headers: {
+                'Content-Type': 'application/json'
+              }
+          });
+          
+          // 새로운 accessToken이 성공적으로 발급된 경우
+          if (res.data && res.data.accessToken) {
+            localStorage.setItem('accessToken', res.data.accessToken);
+            localStorage.setItem('refreshToken', res.data.refreshToken);
+            console.log("token 재발급 완료");
+            setIsTokenValid(true); // 새 토큰 발급 후 유효한 것으로 설정
+          } else {
+            setIsTokenValid(false);
+          }
+        } catch {
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
+          setIsTokenValid(false);
+        }
+      }
+    }
   };
 
   const openPopup = () => {
@@ -63,6 +112,26 @@ function Header() {
         }
     }
   };
+
+  const handleMypage = () => {
+    handleLinkClick(); //accessToken만료확인 함수 호출
+    if(isTokenValid){ //이후 isTokenValid가 true면 클락한 페이지로이동
+      navigate('/mypage');
+    } else { //아니면 못들어가게
+      alert("로그인 후 이용해주세요.");
+      navigate('/');
+    }
+  }
+
+  const handleCommunity = () => {
+    handleLinkClick(); //accessToken만료확인 함수 호출
+    if(isTokenValid){ //이후 isTokenValid가 true면 클락한 페이지로이동
+      navigate('/free');
+    } else { //아니면 못들어가게
+      alert("로그인 후 이용해주세요.");
+      navigate('/');
+    }
+  }
   
   const handleLoginSuccess = () => {
     // 로그인 성공 후 상태를 업데이트
@@ -83,7 +152,7 @@ function Header() {
           <li><a href="#lectures">강의</a></li>
           <li><Link to="/StudyGroup/Calendar">스터디</Link></li>
           <li><a href="#mentoring">멘토링</a></li>
-          <li><Link to="/free">커뮤니티</Link></li>
+          <li><Link onClick={handleCommunity}>커뮤니티</Link></li>
         </ul>
       </nav>
       <div className="auth-buttons">
@@ -95,7 +164,7 @@ function Header() {
             src={profileImage}
             alt="profile-image"
             className="header-profile-image"
-            onClick={handleImageClick}
+            onClick={handleMypage}
           /> 
           <span className="hover-text">마이페이지</span>
           </div>

@@ -2,26 +2,8 @@ import React from "react";
 import MyPageSideNav from "./MyPageSideNav";
 import '../../styles/MyPage.css';
 import ToggleSwitch from "../ReusableComponents/ToggleSwitch";
-import { useEffect } from "react";
-import useCheckTokenValidity from "../ReusableComponents/useCheckTokenValidity";
-import { useNavigate } from "react-router-dom";
 
 function EditNotification() {
-    const isTokenValid = useCheckTokenValidity();
-    const navigate = useNavigate();
-  
-    useEffect(() => {
-      if (isTokenValid === false) {
-        alert("로그인후 이용해주세요.");
-        navigate('/');
-      }
-    }, [isTokenValid, navigate]);
-  
-  
-    if (!isTokenValid) {
-      return null; // 유효하지 않으면 MyPage 컴포넌트 렌더링 중단
-    }
-    
     return(
         <div>
             <div className='container'>

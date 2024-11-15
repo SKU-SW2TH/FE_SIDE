@@ -14,7 +14,6 @@ function SignUp() {
     const [password, setPassword] = useState("");
     const [nickname, setNickname] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
     const [sendEmailSuccessMessage, setSendEmailSuccessMessage] = useState("");
     const [verifyCodeSuccessMessage, setVerifyCodeSuccessMessage] = useState("");
     const [emailError, setEmailError] = useState("");
@@ -33,7 +32,9 @@ function SignUp() {
     const [isNicknameChecked, setIsNicknameChecked] = useState(false); // 중복 확인 상태 추가
     const [passwordValid, setPasswordValid] = useState(false);
     const [nicknameValid, setNicknameValid] = useState(true);
-    const [notification, setNotification] = useState('');  // 알림 메시지 상태
+    const [showModal, setShowModal] = useState(false);
+    const [modalContent, setModalContent] = useState("");
+
     const nevigate = useNavigate();
 
     // 이메일 유효성 검사 함수
@@ -41,18 +42,6 @@ function SignUp() {
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailPattern.test(email);
     };
-
-    const showNotification = (message) => {
-        setNotification(message);
-    };
-
-    useEffect(() => {
-        // 알림 모달을 표시 후 3초 뒤에 자동으로 닫기
-        if (notification) {
-            const timer = setTimeout(() => setNotification(''), 3000);
-            return () => clearTimeout(timer);
-        }
-    }, [notification]);
 
     const handleEmailChange = (e) => {
         const inputEmail = e.target.value;
@@ -123,29 +112,6 @@ function SignUp() {
     const handleSubmit = async (e) => {
         e.preventDefault();
     
-        if (!nicknameValid && !validatePassword(password)) {
-            showNotification("닉네임 특수 문자 사용여부 및 비밀번호 형식을 확인 해주세요.");
-            return;
-        }
-
-        if (!isNicknameChecked) {
-            showNotification("닉네임 중복 확인을 해주세요.");
-            return;
-        }
-
-        // 비밀번호 유효성을 재확인하여 제출 방지
-        if (!validatePassword(password)) {
-            showNotification("비밀번호 형식을 확인해 주세요.");
-            return;
-        }
-        
-        // 닉네임 유효성 검사
-        if (!nicknameValid) {
-            showNotification("닉네임 특수문자 사용 불가");
-            return;
-        }
-
-    
         // 이메일, 닉네임, 비밀번호가 유효하다면 서버로 요청
         try {
           const response = await axios.post("http://ec2-3-39-85-170.ap-northeast-2.compute.amazonaws.com:8080/api/auth/join", {
@@ -155,16 +121,16 @@ function SignUp() {
           });
     
           if (response.status === 200) {
-            showNotification("회원가입이 완료되었습니다");
-            nevigate('/');
+            setModalContent("회원가입이 완료되었습니다");
+            setShowModal(true);
           }
         } catch (error) {
           if (error.response) {
             const status = error.response.status;
             if (status === 409) {
-                showNotification("이미 가입된 이메일입니다.");
+                setEmailError("✗ 이미 가입된 이메일입니다.");
             } else if (status === 500) {
-                showNotification("예기치 못한 오류가 발생했습니다.");
+                setEmailError("✗ 예기치 못한 오류가 발생했습니다.");
             }
           }
         }
@@ -461,7 +427,9 @@ function SignUp() {
             </div>
             </form>
             {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-            {notification && <NotificationModal message={notification} onClose={() => setNotification('')} />}
+            {showModal && (
+                <NotificationModal content={modalContent} onClose={() => setShowModal(false)} />
+            )}
         </div>
     );
 }
