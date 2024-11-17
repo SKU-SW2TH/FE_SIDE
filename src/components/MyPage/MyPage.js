@@ -11,30 +11,30 @@ function MyPage({ initialUserName, profileImage, userId }) {
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [isPasswordModalOpen, setPasswordModalOpen] = useState(false);
   const [isDeletionModalOpen, setDeletionModalOpen] = useState(false);
-
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const fixedUserId = "bj10111@naver.com";
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true); 
 
   useEffect(() => {
-    // localStorage에서 resetToken 가져오기
+    // localStorage에서 accessToken 가져오기
     const accessToken = localStorage.getItem('accessToken');
     
     if (!accessToken) {
-      console.log("accessToken 필요")
+        console.log("accessToken 필요")
         navigate('/');
     } else {
       setIsLoading(false); // 토큰이 있으면 로딩 상태 해제
     }
-  }, [navigate]);
+  }, []);
 
   if (isLoading) {
     // 로딩 중일 때 화면 표시 방지
     return null;
   }
+
+  const handleCloseDeletionModal = () => {
+    setDeletionModalOpen(false);
+  };
 
   // 프로필 편집 핸들러
   const handleEditProfile = () => {
@@ -47,32 +47,6 @@ function MyPage({ initialUserName, profileImage, userId }) {
 
   const handleCancelEdit = () => {
     setIsEditingProfile(false);
-    setCurrentPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
-  };
-
-  // 비밀번호 변경 핸들러
-  const handleChangePassword = () => {
-    if (newPassword !== confirmPassword) {
-      alert("새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
-      return;
-    }
-
-    console.log("현재 비밀번호:", currentPassword);
-    console.log("새 비밀번호:", newPassword);
-
-    // 비밀번호 업데이트 로직 예시 (API 호출)
-    // ...
-
-    setCurrentPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
-    setPasswordModalOpen(false); // 모달 닫기
-  };
-
-  const handleCloseDeletionModal = () => {
-    setDeletionModalOpen(false);
   };
 
   const handleDeletionConfirmed = () => {
@@ -183,13 +157,6 @@ function MyPage({ initialUserName, profileImage, userId }) {
       <PasswordModal
         isOpen={isPasswordModalOpen}
         onClose={() => setPasswordModalOpen(false)}
-        currentPassword={currentPassword}
-        setCurrentPassword={setCurrentPassword}
-        newPassword={newPassword}
-        setNewPassword={setNewPassword}
-        confirmPassword={confirmPassword}
-        setConfirmPassword={setConfirmPassword}
-        onSubmit={handleChangePassword}
       />
     </div>  
   ); 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
 
 const ModalBackground = styled.div`
   position: fixed;
@@ -54,6 +55,15 @@ const ModalButton = styled.button`
   }
 `;
 
+const ModalSuccessMessage = styled.p`
+  font-size: 19px;
+  margin-bottom: 30px;
+`;
+
+const ModalSuccessForm = styled.div`
+  text-align:center;
+`;
+
 const Condition = styled.p`
   color: ${({ isValid }) => {
     if (isValid === null) return "gray"; // 초기 상태 회색
@@ -61,13 +71,16 @@ const Condition = styled.p`
   }};
 `;
 
-function PasswordModal({ isOpen, onClose, currentPassword, setCurrentPassword, onSubmit }) {
-  const [newPassword, setNewPassword] = useState("");
+function PasswordModal({isOpen, onClose}) {
+  const [newPassword, setNewPassword]  = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
   const [isLengthValid, setIsLengthValid] = useState(null);
   const [isComplexityValid, setIsComplexityValid] = useState(null);
   const [isRepetitionValid, setIsRepetitionValid] = useState(null);
   const [passwordMatchError, setPasswordMatchError] = useState(""); // 비밀번호 불일치 오류 메시지
+  const [isSuccess, setIsSuccess] = useState(false); // 비밀번호 변경 성공 상태
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
 
   const validatePassword = (password) => {
     setIsLengthValid(password.length >= 8 && password.length <= 32);
@@ -79,13 +92,6 @@ function PasswordModal({ isOpen, onClose, currentPassword, setCurrentPassword, o
     const password = e.target.value;
     setNewPassword(password);
     validatePassword(password);
-
-    // 비밀번호 확인 일치 여부 확인
-    if (confirmPassword && password !== confirmPassword) {
-      setPasswordMatchError("비밀번호가 일치하지 않습니다.");
-    } else {
-      setPasswordMatchError("");
-    }
   };
 
   const handleConfirmPasswordChange = (e) => {
@@ -95,41 +101,93 @@ function PasswordModal({ isOpen, onClose, currentPassword, setCurrentPassword, o
     // 비밀번호 일치 여부를 즉시 확인
     if (confirmPassword !== newPassword) {
       setPasswordMatchError("비밀번호가 일치하지 않습니다.");
+      setPasswordErrorMessage("");
     } else {
       setPasswordMatchError("");
+      setPasswordErrorMessage("");
     }
   };
 
   const handleClose = () => {
-    setCurrentPassword(""); // 현재 비밀번호 초기화
+    setOldPassword(""); // 현재 비밀번호 초기화
     setNewPassword(""); // 새 비밀번호 초기화
     setConfirmPassword(""); // 새 비밀번호 확인 초기화
     setIsLengthValid(null); // 비밀번호 유효성 초기화
     setIsComplexityValid(null); // 비밀번호 유효성 초기화
     setIsRepetitionValid(null); // 비밀번호 유효성 초기화
     setPasswordMatchError(""); // 비밀번호 불일치 오류 초기화
+    setIsSuccess(false); // 성공 상태로 전환
+    setPasswordErrorMessage("");
     onClose(); // 모달 닫기
   };
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (newPassword === confirmPassword && isLengthValid && isComplexityValid && isRepetitionValid) {
-      onSubmit(); // 비밀번호 변경 핸들러 호출
+      const accessToken = localStorage.getItem('accessToken');
+
+      console.log(accessToken);
+
+      const data = {
+        oldPassword: oldPassword,
+        newPassword: newPassword
+      }
+
+      try {
+        // 서버에 resetToken 유효성 검사를 GET 방식으로 요청
+        const response = await axios.patch(
+            `http://ec2-3-39-85-170.ap-northeast-2.compute.amazonaws.com:8080/api/member/change/password`,
+            data,
+            {
+              headers: { 
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${accessToken}`
+              }
+          }
+        );
+  
+        if (response.status === 200) {
+            console.log(response.status);
+            console.log("비밀번호 변경 완료");
+            setIsSuccess(true); // 성공 상태로 전환
+        }
+      } catch (error) {
+        if(error.response.status === 400) {
+          setPasswordMatchError("");
+          setPasswordErrorMessage("✗ 비밀번호 형식 혹은 현재비밀번호를 확인해주세요.");
+        } else if (error.response.status === 500) {
+          setPasswordMatchError("");
+          setPasswordErrorMessage("✗ 서버에러, 잠시후 다시 시도해주세요.");
+        }
+      }
+  
     }
   };
 
   return (
     <ModalBackground>
       <ModalContainer>
+      {isSuccess ? ( // 성공 시 표시할 내용
+          <>
+          <ModalSuccessForm>
+              <ModalSuccessMessage>
+                비밀번호 변경완료
+              </ModalSuccessMessage>
+              <ModalButton onClick={handleClose}>화인</ModalButton>
+          </ModalSuccessForm>
+          </>
+        ) : (
+          <>
         <ModalTitle>비밀번호 설정</ModalTitle>
         <form onSubmit={handleSubmit}>
           <ModalInput 
             type="password" 
             placeholder="현재 비밀번호" 
-            value={currentPassword} 
-            onChange={(e) => setCurrentPassword(e.target.value)} 
+            value={oldPassword} 
+            onChange={(e) => setOldPassword(e.target.value)} 
             required 
           />
           <ModalInput 
@@ -162,11 +220,16 @@ function PasswordModal({ isOpen, onClose, currentPassword, setCurrentPassword, o
           {passwordMatchError && (
             <p style={{ color: "red" }}>✗ {passwordMatchError}</p>
           )}
+          {passwordErrorMessage && (
+            <p style={{ color: "red" }}>{passwordErrorMessage}</p>
+          )}
           <div style={{ textAlign: 'right' }}>
             <ModalButton type="button" onClick={handleClose}>취소</ModalButton>
-            <ModalButton type="submit">설정</ModalButton>
+            <ModalButton type="submit">확인</ModalButton>
           </div>
-        </form>
+          </form>
+          </>
+        )}
       </ModalContainer>
     </ModalBackground>
   );

@@ -122,16 +122,6 @@ function Header() {
       navigate('/');
     }
   }
-
-  const handleCommunity = () => {
-    handleLinkClick(); //accessToken만료확인 함수 호출
-    if(isTokenValid){ //이후 isTokenValid가 true면 클락한 페이지로이동
-      navigate('/free');
-    } else { //아니면 못들어가게
-      alert("로그인 후 이용해주세요.");
-      navigate('/');
-    }
-  }
   
   const handleLoginSuccess = () => {
     // 로그인 성공 후 상태를 업데이트
@@ -152,7 +142,7 @@ function Header() {
           <li><a href="#lectures">강의</a></li>
           <li><Link to="/StudyGroup/Calendar">스터디</Link></li>
           <li><a href="#mentoring">멘토링</a></li>
-          <li><Link onClick={handleCommunity}>커뮤니티</Link></li>
+          <li><Link to="/free">커뮤니티</Link></li>
         </ul>
       </nav>
       <div className="auth-buttons">

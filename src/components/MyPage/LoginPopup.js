@@ -51,7 +51,7 @@ function LoginPopup({ closePopup, onLoginSuccess }) {
       console.log(response);
 
       if (response.status === 200) {
-        const { accessToken } = response.data;
+        const { accessToken }  = response.data;
         const { refreshToken } = response.data;
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
