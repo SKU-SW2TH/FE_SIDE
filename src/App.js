@@ -20,11 +20,13 @@ import WriteIntroduce from './components/MyPage/WriteIntroduce';
 import Home from './components/Main/Home';
 import Notice from './components/StudyGroup/Notice';
 import NoticeDetails from './components/StudyGroup/NoticeDetails';
-import StudyGroup from './components/StudyGroup/StudyGroup';
-import Calender from './components/StudyGroup/Calendar'
+import StudyGroupChat from './components/StudyGroup/StudyGroupChat';
+import Calender from './components/StudyGroup/Calendar';
+import Team from './components/StudyGroup/Team';
 import Header from './components/ReusableComponents/Header';
 import Footer from './components/ReusableComponents/Footer';
 import FAQ from './components/ReusableComponents/FAQ'; 
+import DailyLog from './components/StudyGroup/DailyLogPage';
 import { SelectedChannelProvider } from './SelectedChannelContext';
 
 
@@ -53,11 +55,12 @@ function App() {
       <Route path='/profile-edit-in' element={<ProfileEditIn/>}/>
       <Route path='/edit-email' element={<EditEmail/>}/>
       <Route path='/write-introduce' element={<WriteIntroduce/>}/>
-       {/*브라우저에서 path에 따라 element가 렌더링된다*/ }
-      <Route path='/StudyGroup' element={<StudyGroup />} />
+      <Route path='/StudyGroup/Chat' element={<StudyGroupChat />} />
       <Route path='/StudyGroup/Calendar' element={<Calender />} />
       <Route path='/StudyGroup/Notice' element={<Notice />} />  {/*공지사항 목록 페이지*/}
       <Route path='/StudyGroup/NoticeDetails' element={<NoticeDetails />} />  {/*공지사항 세부내용 페이지*/}
+      <Route path='/StudyGroup/DailyLog' element={<DailyLog />} />
+      <Route path='/StudyGroup/Team' element={<Team />} />
       </Routes>
     </div>
     <Footer />

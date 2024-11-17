@@ -1,4 +1,3 @@
-// App.js
 import React from 'react';
 import '../../styles/Home.css';
 import Hero from '../StudyGroup/Hero';

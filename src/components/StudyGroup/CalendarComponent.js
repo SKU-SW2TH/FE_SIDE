@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../../styles/CalendarComponent.css';
 
-const App = () => {
+const CalendarComponent = () => {
   const today = new Date();
   const [events, setEvents] = useState([
     { id: 1, title: '1차 면접', start: `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-04T10:00`, end: `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-04T11:00`, color: '#FFDDC1', details: '세부내용 예시' },
@@ -175,4 +175,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default CalendarComponent;
