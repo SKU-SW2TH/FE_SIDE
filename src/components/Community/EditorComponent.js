@@ -1,43 +1,56 @@
 // EditorComponent.js
-import React, { useRef } from 'react';
-import { Editor } from '@toast-ui/react-editor';
-import '@toast-ui/editor/dist/toastui-editor.css';
-import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
-import 'tui-color-picker/dist/tui-color-picker.css';
+import React from 'react';
+import { Editor } from '@tinymce/tinymce-react';
 
-const EditorComponent = ({ handleImageUpload, onSave }) => {
-    const editorRef = useRef(null);
-
-    // Markdown을 부모 컴포넌트로 전달하는 함수
-    const handleSave = () => {
-        if (!editorRef.current) return;
-        const markdown = editorRef.current.getInstance().getMarkdown();
-        onSave(markdown);  // 부모 컴포넌트로 Markdown 데이터 전달
-    };
-
+function EditorComponent({ content, onEditorChange, handleImageUpload }) {
     return (
-        <div>
-            <Editor
-                ref={editorRef}
-                initialValue="Welcome to Toast UI Editor"
-                previewStyle="vertical"
-                height="600px"
-                initialEditType="wysiwyg"
-                useCommandShortcut={true}
-                hideModeSwitch={true}
-                plugins={[colorSyntax]}
-                hooks={{
-                    addImageBlobHook: async (file, callback) => {
-                        const imageUrl = await handleImageUpload(file);
-                        callback(imageUrl, 'alt text'); // 이미지 URL 삽입
-                    },
-                }}
-            />
-            <div>
-                <button type="button" className="submit-button" onClick={handleSave}>게시글 작성</button>
-            </div>
-        </div>
+        <Editor
+            apiKey={process.env.REACT_APP_TINYMCE_API_KEY}
+            value={content}
+            init={{
+                height: 500,
+                menubar: false,
+                branding: false,
+                statusbar: false,
+                plugins: [
+                    'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                    'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                    'insertdatetime', 'media', 'table', 'help', 'wordcount'
+                ],
+                toolbar: [
+                    'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify',
+                    'bullist numlist outdent indent | image | removeformat | help'
+                ].join(' | '),
+                images_upload_handler: handleImageUpload,
+                automatic_uploads: true,
+                file_picker_types: 'image',
+                images_file_types: 'jpg,jpeg,png,gif',
+                image_uploadtab: true,
+                image_dimensions: false,
+                image_title: false,
+                image_description: false,
+                file_picker_callback: function(callback, value, meta) {
+                    if (meta.filetype === 'image') {
+                        var input = document.createElement('input');
+                        input.setAttribute('type', 'file');
+                        input.setAttribute('accept', 'image/*');
+                        input.onchange = function() {
+                            var file = this.files[0];
+                            var reader = new FileReader();
+                            reader.onload = function(e) {
+                                callback(e.target.result, {
+                                    alt: file.name
+                                });
+                            };
+                            reader.readAsDataURL(file);
+                        };
+                        input.click();
+                    }
+                }
+            }}
+            onEditorChange={onEditorChange}
+        />
     );
-};
+}
 
 export default EditorComponent;

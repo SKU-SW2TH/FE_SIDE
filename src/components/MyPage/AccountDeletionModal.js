@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from 'styled-components';
+import { useNavigate } from "react-router-dom";
+import { useAuth } from '../ReusableComponents/AuthContext';
+import axios from "axios";
 
 const ModalBackground = styled.div`
   position: fixed;
@@ -66,8 +69,49 @@ function AccountDeletionModal() {
   const [step, setStep] = useState(1);
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(''); // 오류 메시지 상태 추가
+  const { setIsLoggedIn } = useAuth();
   const [hasError, setHasError] = useState(false); // 오류 상태 추가
+  const navigate = useNavigate();
   const modalRef = useRef(null);
+
+  const memeberDeletion = async () => {
+    const refreshToken = localStorage.getItem('refreshToken');
+    try {
+      const response = await axios.delete(
+        `http://ec2-3-39-85-170.ap-northeast-2.compute.amazonaws.com:8080/api/auth/delete-account`,
+        {
+          headers: {
+            'Authorization': `Bearer ${refreshToken}`,
+          }
+        }
+      );
+
+      if(response.status === 200) {
+        console.log("탈퇴완료");
+      }
+
+    } catch (error) {
+      console.error("프로필 정보를 불러오는 데 실패했습니다.", error);
+    }
+  };
+
+  const passwordValidation = async () => {
+    const email = localStorage.getItem('email');
+    try {
+      const response = await axios.post(
+        `http://ec2-3-39-85-170.ap-northeast-2.compute.amazonaws.com:8080/api/auth/login`,
+        { email,password }
+      );
+      
+      if(response.status === 200) {
+        console.log("비밀번호 일치");
+        return true;
+      }
+    } catch (error) {
+      console.error("프로필 정보를 불러오는 데 실패했습니다.", error);
+      return false;
+    }
+  };
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -83,6 +127,42 @@ function AccountDeletionModal() {
     setHasError(false); // 오류 상태 초기화
   };
 
+  const handleLogout = async (e) => {
+    const token = localStorage.getItem('refreshToken');
+
+    try {
+        const response = await axios.post(
+            'http://ec2-3-39-85-170.ap-northeast-2.compute.amazonaws.com:8080/api/auth/logout',
+            {
+              refreshToken: token  // refreshToken이라는 키로 token 값을 전송
+            }
+        );
+
+        if (response.status === 200) {
+            // 로그아웃 시 `localStorage`에서 토큰 삭제 후 상태 초기화
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            console.log(response.status);
+            setIsLoggedIn(false);
+            navigate('/');
+            console.log("로그아웃 완료");
+        }
+    } catch (error) {
+        if (error.response) {
+            if (error.response.status === 500) {
+              console.log(error.response.status);
+            } 
+        }
+    }
+  };
+  const closeModalDeletionComplete = () => {
+    setIsModalOpen(false);
+    setPassword('');
+    setErrorMessage(''); // 모달 닫을 때 오류 메시지 초기화
+    setHasError(false); // 오류 상태 초기화
+    handleLogout();
+  };
+
   const handleYesClick = () => {
     setStep(2);
   };
@@ -93,8 +173,10 @@ function AccountDeletionModal() {
     setHasError(false); // 비밀번호 입력 시 오류 상태 초기화
   };
 
-  const handleConfirmClick = () => {
-    if (password === 'jong631012@') { // 비밀번호 확인
+  const handleConfirmClick = async () => {
+    const isValid = await passwordValidation();
+    if (isValid) { // 비밀번호 확인
+      memeberDeletion();
       setStep(3);
       setHasError(false); // 오류 상태 초기화
     } else {
@@ -163,7 +245,7 @@ function AccountDeletionModal() {
             {step === 3 && (
               <>
                 <p>탈퇴 완료 되었습니다. 이용해 주셔서 감사합니다.</p>
-                <Button onClick={closeModal}>확인</Button>
+                <Button onClick={closeModalDeletionComplete}>확인</Button>
               </>
             )}
           </ModalContainer>

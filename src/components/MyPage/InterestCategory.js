@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 const ModalBackground = styled.div`
   position: fixed;
@@ -84,40 +85,94 @@ const ModalButton = styled.button`
   }
 `;
 
-function InterestCategory({ isOpen, onClose, onSelectionChange }) {
+function InterestCategory({ isOpen, onClose, onSelectionChange, initialSelectedItems }) {
   const [secondCategory, setSecondCategory] = useState('프론트');
   const [thirdCategories, setThirdCategories] = useState([]);
+  const [thirdCategoryOptions, setThirdCategoryOptions] = useState({
+    프론트: [],
+    백엔드: [],
+    '프로그래밍 언어': []
+  });
+
+  useEffect(() => {
+    if (isOpen && initialSelectedItems) {
+      setThirdCategories(initialSelectedItems);
+    }
+  }, [isOpen, initialSelectedItems]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(
+          'http://ec2-3-39-85-170.ap-northeast-2.compute.amazonaws.com:8080/api/member/interestList'
+        );
+
+        // 2차 카테고리 찾기
+        const secondLevelCategories = response.data.filter(item => item.level === 2);
+        
+        // thirdCategoryOptions 구성
+        const options = {};
+        secondLevelCategories.forEach(secondCat => {
+          const categoryName = secondCat.areaName;
+          const thirdLevelItems = response.data
+            .filter(item => item.parentId === secondCat.id)
+            .map(item => ({
+              id: item.id,
+              name: item.areaName
+            }));
+          
+          options[categoryName] = thirdLevelItems;
+        });
+
+        setThirdCategoryOptions(options);
+      } catch (error) {
+        console.error('카테고리 데이터 로딩 실패:', error);
+      }
+    };
+
+    if (isOpen) {
+      fetchCategories();
+    }
+  }, [isOpen, initialSelectedItems]);
 
   const handleSecondCategoryChange = (e) => {
-    setSecondCategory(e.target.value);
-    setThirdCategories([]); // Reset third categories when changing second category
+    const newCategory = e.target.value;
+    console.log('선택된 2차 카테고리:', newCategory);
+    setSecondCategory(newCategory);
   };
 
+  // ... existing code ...
+
   const handleThirdCategoryChange = (e) => {
-    const value = e.target.value;
+    const selectedId = parseInt(e.target.value);
     setThirdCategories((prevCategories) => {
-      if (prevCategories.includes(value)) {
-        return prevCategories.filter((category) => category !== value);
+      if (prevCategories.includes(selectedId)) {
+        // 이미 선택된 항목이면 제거
+        return prevCategories.filter((id) => id !== selectedId);
       } else {
-        return [...prevCategories, value].slice(0, 10); // Limit to 10 selections
+        // 선택되지 않은 항목이면 추가
+        return [...prevCategories, selectedId];
       }
     });
   };
 
+  // 체크박스 렌더링 부분 수정
+  {thirdCategoryOptions[secondCategory]?.map((option) => (
+    <CheckboxButton key={option.id}>
+      <input
+        type="checkbox"
+        name="thirdCategory"
+        value={option.id}
+        checked={thirdCategories.includes(option.id)}
+        onChange={handleThirdCategoryChange}
+      />
+      {option.name}
+    </CheckboxButton>
+  ))}
+
   const resetState = () => {
     setSecondCategory('프론트');
     setThirdCategories([]);
-  };
-
-  const handleSave = () => {
-    onSelectionChange(secondCategory, thirdCategories);
-    onClose();
-  };
-
-  const thirdCategoryOptions = {
-    프론트: ['React', 'Angular', 'Vue.js', 'Svelte', 'jQuery', 'Backbone.js', 'Preact', 'Ember.js'],
-    백엔드: ['Node.js', 'Spring', 'SpringBoot', 'Django', 'Flask', 'Laravel', 'Ruby on Rails', 'CakePHP'],
-    프로그래밍언어: ['Java', 'Python', 'C', 'C++', 'Ruby', 'JavaScript', 'Go', 'PHP', 'Kotlin', 'Swift'],
   };
 
   const handleCancel = () => {
@@ -144,6 +199,34 @@ function InterestCategory({ isOpen, onClose, onSelectionChange }) {
     };
   }, [secondCategory, thirdCategories]); // Add dependencies as needed
 
+
+  const handleSave = async () => {
+    const accessToken = localStorage.getItem('accessToken');
+    try {
+      const response = await axios.put(
+        `http://ec2-3-39-85-170.ap-northeast-2.compute.amazonaws.com:8080/api/member/update/interest`,
+        {
+          "ids": thirdCategories
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+          }
+        }
+      );
+      onClose();
+      if(response.status === 200) {
+        console.log("관심분야 업데이트 완료" + response.status);
+        console.log("response.data: ", response.data);
+        console.log("secondCategory: " + secondCategory);
+        console.log("thirdCategories: " + thirdCategories);
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error("관심분야 업데이트 실패" + error.response.status);
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -166,8 +249,8 @@ function InterestCategory({ isOpen, onClose, onSelectionChange }) {
               <input
                 type="radio"
                 name="secondCategory"
-                value="프로그래밍언어"
-                checked={secondCategory === '프로그래밍언어'}
+                value="프로그래밍 언어"
+                checked={secondCategory === '프로그래밍 언어'}
                 onChange={handleSecondCategoryChange}
               />
               프로그래밍언어
@@ -197,21 +280,43 @@ function InterestCategory({ isOpen, onClose, onSelectionChange }) {
         <CategorySection>
           <CategoryLabel>3차 분류</CategoryLabel>
           <CategoryOption>
-            {thirdCategoryOptions[secondCategory].map((option) => (
-              <CheckboxButton key={option}>
+            {thirdCategoryOptions[secondCategory]?.map((option) => (
+              <CheckboxButton key={option.id}>
                 <input
                   type="checkbox"
                   name="thirdCategory"
-                  value={option}
-                  checked={thirdCategories.includes(option)}
+                  value={option.id}
+                  checked={thirdCategories.includes(option.id)}
                   onChange={handleThirdCategoryChange}
                 />
-                {option}
+                {option.name}
               </CheckboxButton>
             ))}
           </CategoryOption>
         </CategorySection>
         <ButtonContainer>
+          <ModalButton onClick={async () => {
+            const accessToken = localStorage.getItem('accessToken');
+            try {
+              const response = await axios.put(
+                `http://ec2-3-39-85-170.ap-northeast-2.compute.amazonaws.com:8080/api/member/update/interest`,
+                {
+                  "ids": [] // 빈 배열 전송
+                },
+                {
+                  headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                  }
+                }
+              );
+              if(response.status === 200) {
+                setThirdCategories([]);
+                console.log("관심분야 전체 삭제 완료");
+              }
+            } catch (error) {
+              console.error("관심분야 삭제 실패", error);
+            }
+          }}>초기화</ModalButton>
           <ModalButton onClick={handleCancel}>취소</ModalButton>
           <ModalButton onClick={handleSave}>저장</ModalButton>
         </ButtonContainer>

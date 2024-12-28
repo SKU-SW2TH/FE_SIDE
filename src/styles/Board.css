@@ -67,8 +67,8 @@
 /* 페이지네이션 버튼 스타일 */
 .pagination button {
     background-color: white; /* 버튼 배경 색 */
-    color: black; /* 버튼 텍스트 색 */
-    border: 1px solid black; /* 테두리 */
+    color: #515050; /* 버튼 텍스트 색 */
+    border: 1px solid #999; /* 테두리 */
     padding: 10px 15px; /* 여백 */
     margin: 0 5px; /* 버튼 간격 */
     cursor: pointer; /* 커서 모양 변경 */
@@ -77,20 +77,15 @@
 
 /* 현재 페이지 버튼 스타일 */
 .pagination button.active {
-    background-color: black; /* 현재 페이지 배경 색 */
-    color: white; /* 현재 페이지 텍스트 색 */
+    color: #515050; /* 현재 페이지 텍스트 색 */
 }
 
 /* 호버 시 효과 */
 .pagination button:hover {
-    background-color: lightgray; /* 호버 시 배경 색 변경 */
+    background-color: #93929214; /* 호버 시 배경 색 변경 */
 }
-
-/* 비활성화된 버튼 스타일 */
-.pagination button:disabled {
-    background-color: lightgray; /* 비활성화된 버튼 배경 */
-    color: gray; /* 비활성화된 버튼 텍스트 색 */
-    cursor: not-allowed; /* 커서 모양 변경 */
+.pagination button:disabled:hover {
+  background-color: white;
 }
 
 ul {
@@ -150,23 +145,20 @@ body {
 }
 
 
-  .heart-button {
-    margin-left: 800px;
-    background-color: white; /* 버튼 배경 색 */
-    color: rgb(157, 19, 19); /* 버튼 텍스트 색 */
-    border: 1px solid rgba(184, 183, 183, 0.688); /* 테두리 */
-    padding: 4px 8px; /* 여백 */
-    margin: 0 5px; /* 버튼 간격 */
-    cursor: pointer; /* 커서 모양 변경 */
-    border-radius: 5px; /* 모서리 둥글게 */
-  }
-
-  .heart-button:hover {
-    background-color: rgba(232, 230, 230, 0.183); /* 호버 시 배경 색 변경 */
+.heart-button, .report-button {
+  background-color: white; /* 버튼 배경 색 */
+  border: 1px solid rgba(184, 183, 183, 0.688); /* 테두리 */
+  padding: 4px 8px; /* 여백 */
+  margin: 0 5px; /* 버튼 간격 */
+  cursor: pointer; /* 커서 모양 변경 */
+  border-radius: 5px; /* 모서리 둥글게 */
 }
 
 .heart {
-    margin-left: 750px;
+    margin-left: 5px;
+}
+.report {
+    margin-left: 5px;
 }
 
 
@@ -179,123 +171,252 @@ body {
     opacity: 0.5;        /* 선의 투명도 설정 (0.1은 10% 투명도) */
 }
 
+.reply-box {
+  margin-top: 20px;
+  width: 1100px;
+}
 
-  
- 
-  .reply-box {
-    margin-top: 20px;
-    width: 1100px;
-  }
+.reply-input-container {
+  margin-top: -15px;
+}
 
-  
-  .reply-container {
-    margin-left: 20px;
-    border-left: 2px solid #ddd;
-    padding-left: 10px;
-  }
-  
-
-  
-/* 기존 스타일 유지 */
-
-/* 댓글 버튼 기본 스타일 */
-.comment-button {
-    background-color: #007bff; /* 기본 배경색 */
-    color: white; /* 글자 색상 */
-    border: none; /* 테두리 제거 */
-    border-radius: 5px; /* 모서리 둥글게 */
-    padding: 8px 12px; /* 패딩 추가 */
-    font-size: 14px; /* 글자 크기 */
-    cursor: pointer; /* 포인터 커서 */
-    transition: background-color 0.3s, box-shadow 0.3s; /* 전환 효과 */
-    margin-right: 5px; /* 버튼 사이 간격 */
-  }
-  
-  /* 마우스 오버 효과 */
-  .comment-button:hover {
-    background-color: #0056b3; /* 마우스 오버 시 배경색 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
-  }
-  
-  /* 버튼 비활성화 상태 */
-  .comment-button:disabled {
-    background-color: #d6d6d6; /* 비활성화 배경색 */
-    color: #a0a0a0; /* 비활성화 글자색 */
-    cursor: not-allowed; /* 비활성화 커서 */
-  }
-  
+.reply-container {
+  margin-left: 20px;
+  border-left: 2px solid #ddd;
+  padding-left: 10px;
+}
   /* 댓글 입력창 스타일 */
-  .reply-input {
-    width: 1100px; /* 전체 너비 */
-    padding: 8px; /* 패딩 추가 */
-    margin-top: 5px; /* 위쪽 여백 */
-    border: 1px solid #ccc; /* 테두리 */
-    border-radius: 5px; /* 모서리 둥글게 */
-  }
-  
-  /* 댓글 컨테이너 스타일 */
-  .comment-container {
-    border: 1px solid #ccc; /* 댓글 경계선 */
-    width: 1100px;
-    padding: 10px; /* 패딩 추가 */
-    margin-bottom: 10px; /* 아래쪽 여백 */
-    margin-top: 3px;
-    border-radius: 5px; /* 모서리 둥글게 */
-    background-color: white; /* 배경색 */
-  }
-  
-  .comment-input-container {
-    margin-top: 10px; /* 댓글 작성 영역 상단 여백 */
-  }
-  
-  .comment-input {
-    width: 1100px; /* 입력 필드 전체 너비 */
-    padding: 10px; /* 여백 */
-    margin-bottom: 10px; /* 아래 여백 */
-    margin-top: 3px;
-    border: 1px solid #ccc; /* 테두리 */
-    border-radius: 4px; /* 둥근 모서리 */
-    box-sizing: border-box; /* 패딩 포함 크기 조정 */
-  }
-  
-  .author-input {
-    /* 작성자 이름 입력 필드 */
-    height: 40px; /* 높이 조정 */
-  }
-  
-  .text-input {
-    /* 댓글 내용 입력 필드 */
-    height: 80px; /* 높이 조정 */
-  }
-  
-  .comment-button {
-    background-color: white; /* 버튼 배경색 */
-    color: black; /* 버튼 글자색 */
-    padding: 5px; /* 버튼 패딩 */
-    border: 1px solid lightgray; /* 버튼 테두리 없음 */
-    border-radius: 5px; /* 버튼 둥근 모서리 */
-    cursor: pointer; /* 커서 포인터 */
-    transition: background-color 0.3s; /* 호버 효과 전환 */
-  }
-  
-  .comment-button:hover {
-    background-color: #a3a5a65d; /* 호버 시 배경색 변화 */
-  }
-  
-  .comment-input-button {
-    margin-left: 994px;
-  }
+.reply-input {
+  width: 1097px; /* 전체 너비 */
+  padding: 8px; /* 패딩 추가 */
+  margin-top: 5px; /* 위쪽 여백 */
+  border: 1px solid #ccc; /* 테두리 */
+  border-radius: 5px; /* 모서리 둥글게 */
+}
 
-  .cancel-button {
-    background-color: white; /* 버튼 배경색 */
-    color: black; /* 버튼 글자색 */
-    padding: 5px; /* 버튼 패딩 */
-    border: 1px solid lightgray; /* 버튼 테두리 없음 */
-    border-radius: 5px; /* 버튼 둥근 모서리 */
-    cursor: pointer; /* 커서 포인터 */
-    transition: background-color 0.3s; /* 호버 효과 전환 */
-  }
+/* 댓글 컨테이너 스타일 */
+.comment-container {
+  border: 1px solid #ccc; /* 댓글 경계선 */
+  width: 1100px;
+  padding: 10px; /* 패딩 추가 */
+  margin-bottom: 10px; /* 아래쪽 여백 */
+  margin-top: 3px;
+  border-radius: 5px; /* 모서리 둥글게 */
+  background-color: white; /* 배경색 */
+}
 
-  .cancel-button:hover {
-    background-color: #a3a5a65d; /* 호버 시 배경색 변화 */
-  }
+.comment-input-container {
+  margin-top: 10px; /* 댓글 작성 영역 상단 여백 */
+}
+
+.comment-input {
+  width: 1100px; /* 입력 필드 전체 너비 */
+  padding: 10px; /* 여백 */
+  margin-bottom: 10px; /* 아래 여백 */
+  margin-top: 3px;
+  border: 1px solid #ccc; /* 테두리 */
+  border-radius: 4px; /* 둥근 모서리 */
+  box-sizing: border-box; /* 패딩 포함 크기 조정 */
+}
+
+.author-input {
+  /* 작성자 이름 입력 필드 */
+  height: 40px; /* 높이 조정 */
+}
+
+.text-input {
+  /* 댓글 내용 입력 필드 */
+  height: 80px; /* 높이 조정 */
+}
+
+.comment-button {
+  background-color: white; /* 버튼 배경색 */
+  color: black; /* 버튼 글자색 */
+  padding: 5px; /* 버튼 패딩 */
+  border: 1px solid lightgray; /* 버튼 테두리 없음 */
+  border-radius: 5px; /* 버튼 둥근 모서리 */
+  cursor: pointer; /* 커서 포인터 */
+  transition: background-color 0.3s; /* 호버 효과 전환 */
+}
+
+.comment-input-button {
+  margin-left: 994px;
+}
+
+.cancel-button {
+  background-color: white; /* 버튼 배경색 */
+  color: black; /* 버튼 글자색 */
+  padding: 5px; /* 버튼 패딩 */
+  border: 1px solid lightgray; /* 버튼 테두리 없음 */
+  border-radius: 5px; /* 버튼 둥근 모서리 */
+  cursor: pointer; /* 커서 포인터 */
+  transition: background-color 0.3s; /* 호버 효과 전환 */
+}
+
+.cancel-button:hover {
+  background-color: #a3a5a65d; /* 호버 시 배경색 변화 */
+}
+
+.post-item {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s;
+}
+
+.post-item:hover {
+  background-color: #f5f5f5;
+}
+
+.board a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.board hr {
+    border: none;
+    height: 1px;
+    background-color: lightgray;
+    opacity: 0.5;
+}
+
+.like-img, .view-img, .reply-img {
+    width: 15px;          /* 너비 증가 */
+    height: 12.5px;         /* 높이 증가 */
+    color: #999;
+    stroke-width: 2px;    /* 선 두께 증가 */
+    stroke: #999;         /* 선 색상 지정 */
+    margin-right: 2px;     /* 오른쪽 여백 추가 */
+}
+
+.neko-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content {
+  margin-left: 5px;
+}
+
+.modal-report-button {
+  background-color: #54b773fb; /* 버튼 배경 색 */
+  color: white;
+  border: 1px; /* 테두리 */
+  padding: 4px 8px; /* 여백 */
+  margin: 0 5px; /* 버튼 간격 */
+  cursor: pointer; /* 커서 모양 변경 */
+  border-radius: 5px; /* 모서리 둥글게 */
+}
+
+.modal-report-cancel-button {
+  background-color: white; /* 버튼 배경 색 */
+  border: 1px solid rgba(184, 183, 183, 0.688); /* 테두리 */
+  padding: 4px 8px; /* 여백 */
+  margin: 0 5px; /* 버튼 간격 */
+  cursor: pointer; /* 커서 모양 변경 */
+  border-radius: 5px; /* 모서리 둥글게 */
+}
+
+.report-buttons {
+  margin-left: 150px;
+}
+
+.report-description {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  resize: none;
+  overflow-y: auto;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.5;
+  outline: none;
+}
+
+.report-description:focus {
+  border: 1px solid #ccc;
+}
+
+.modal-report-success-button {
+  background-color: #54b773fb; /* 버튼 배경 색 */
+  color: white;
+  border: 1px; /* 테두리 */
+  padding: 4px 8px; /* 여백 */
+  margin: 0 5px; /* 버튼 간격 */
+  cursor: pointer; /* 커서 모양 변경 */
+  border-radius: 5px; /* 모서리 둥글게 */
+}
+
+
+.modal-report-success-button-container {
+  margin-top: 30px;
+}
+
+.reply-button {
+  margin-left: 5px;
+}
+
+.delete-comment-button {
+  margin-left: 5px;
+}
+
+.reply-button, .delete-comment-button {
+  background-color: white; /* 버튼 배경 색 */
+  color: black;
+  border: 1px solid lightgray; /* 테두리 */
+  padding: 4px 8px; /* 여백 */
+  cursor: pointer; /* 커서 모양 변경 */
+  border-radius: 5px; /* 모서리 둥글게 */
+}
+
+.reply-submit-button {
+  background-color: white; /* 버튼 배경 색 */
+  color: black;
+  border: 1px solid lightgray; /* 테두리 */
+  padding: 4px 8px; /* 여백 */
+  cursor: pointer; /* 커서 모양 변경 */
+  border-radius: 5px; /* 모서리 둥글게 */
+}
+
+.comment-button:hover, .reply-button:hover, .delete-comment-button:hover, .reply-submit-button:hover{
+  background-color: rgba(232, 230, 230, 0.277); /* 호버 시 배경 색 변경 */
+  box-shadow: none; /* 그림자 제거 */
+}
+
+.comment-profile-image {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-top: 10px;
+  margin-right: 10px;
+  border: 1px solid #e0e0e0;
+}
+
+.delete-article-button {
+  background-color: white; /* 버튼 배경 색 */
+  border: 1px solid rgba(184, 183, 183, 0.688); /* 테두리 */
+  padding: 5px 9px; /* 여백 */
+  margin: 0 5px; /* 버튼 간격 */
+  cursor: pointer; /* 커서 모양 변경 */
+  border-radius: 5px; /* 모서리 둥글게 */
+}
+
+.heart-button:hover, .report-button:hover, .delete-article-button:hover {
+  background-color: rgba(232, 230, 230, 0.277); /* 호버 시 배경 색 변경 */
+}
+
+.interests-show {
+  font-size: 14px;
+}
+
+#delete-article-button {
+  margin-left: 640px;
+}
+
+.reply-submit-container {
+  margin-top: 5px;
+  margin-left: 1023px;
+  margin-bottom: 20px;
+}

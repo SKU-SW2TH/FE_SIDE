@@ -192,7 +192,10 @@ input::placeholder {
   margin-top: 50px;
   margin-left: 100px;
   width: 1000px;
-  height: 578px;
+  min-height: 578px; /* 최소 높이 설정 */
+  overflow-wrap: break-word; /* 단어가 길 때 줄 바꿈 */
+  word-wrap: break-word; /* 줄바꿈 처리 */
+  word-break: break-word; /* 줄바꿈 처리 */
   text-align: left;
   border:  1px solid #999;
   border-radius: 10px;
@@ -284,7 +287,9 @@ input::placeholder {
   margin-left: 83px;
   margin-bottom: -60px;
   position: relative;
+  object-fit: cover;  /* 이미지가 비율을 유지하며 잘리거나 늘어남 */
   width: 80px;
+  height: 80px;
 }
 
 .profile-introduce {
@@ -516,4 +521,12 @@ input::placeholder {
 .info-row-deletion {
   margin-top: 300px;
   margin-left: 869px;
+}
+
+.article-content {
+  margin-left: 73px;
+}
+
+.defaultButton{
+  margin-left: 30px;
 }

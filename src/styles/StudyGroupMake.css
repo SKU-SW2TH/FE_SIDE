@@ -1,0 +1,227 @@
+.fixed-button {
+    position: absolute;
+    bottom: 40px;
+    right: 200px;
+}
+
+.group-button {
+    background-color: white; /* 버튼 배경 색 */
+    border: 1px solid rgba(184, 183, 183, 0.688); /* 테두리 */
+    padding: 4px 8px; /* 여백 */
+    width: 100px;
+    height: 35px;
+    font-size: 15px;
+    cursor: pointer; /* 커서 모양 변경 */
+    border-radius: 5px; /* 모서리 둥글게 */
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 400px; /* 모달 너비 조정 */
+}
+
+.modal h2 {
+  margin: 0 0 15px; /* 제목과 내용 간격 조정 */
+}
+
+.modal input,
+.modal textarea {
+  width: 100%; /* 입력 필드 너비 조정 */
+  margin-bottom: 10px; /* 입력 필드 간격 조정 */
+  padding: 10px; /* 패딩 추가 */
+  border: 1px solid #ccc; /* 테두리 스타일 */
+  border-radius: 4px; /* 테두리 둥글게 */
+}
+
+.modal button {
+  margin-right: 10px; /* 버튼 간격 조정 */
+  padding: 10px 15px; /* 버튼 패딩 */
+  border: none; /* 기본 테두리 제거 */
+  border-radius: 4px; /* 버튼 둥글게 */
+  cursor: pointer; /* 커서 포인터로 변경 */
+}
+
+.modal button:hover {
+  background-color: #f0f0f0; /* 버튼 호버 시 배경색 변경 */
+}
+
+.group-name {
+    width: 500px;
+}
+
+.group-title {
+    text-align: center;
+    font-size: 23px;
+    color: rgb(18, 18, 18);
+}
+
+.group-name {
+    margin-top: 5px;
+}
+
+#group-name {
+    width: 150%;
+    height: 30px;
+    border-radius: 10px;
+    border: 1px solid lightgray;
+    padding: 10px; /* 입력 필드 내부 여백 추가 */
+    padding-left: 10px; /* 왼쪽 여백 추가 */
+}
+
+#group-name::placeholder {
+    color: lightgray; /* 원하는 색상으로 변경 */
+    font-size: 14px; /* 원하는 폰트 크기로 변경 */
+}
+
+#group-name:focus, #group-introduce:focus, #group-boss:focus, #search-nickname:focus{
+    border-color: #58c079;
+    outline: none
+}
+
+.group-introduce {
+    margin-top: 10px;
+}
+
+#group-introduce {
+    width: 99%;
+    height: 300px;
+    resize: none; /* 텍스트 영역 크기 조절 비활성화 */
+    border-radius: 10px;
+    border: 1px solid lightgray;
+    padding: 10px; /* 입력 필드 내부 여백 추가 */
+    padding-left: 10px; /* 왼쪽 여백 추가 */
+}
+
+#group-introduce::placeholder {
+    color: lightgray; /* 원하는 색상으로 변경 */
+    font-size: 14px; /* 원하는 폰트 크기로 변경 */
+  }
+
+.search-nickname {
+    margin-top: 20px;
+}
+
+#search-nickname {
+    width: 30%;
+    height: 30px;
+    border-radius: 10px;
+    border: 1px solid lightgray;
+    padding: 10px; /* 입력 필드 내부 여백 추가 */
+    padding-left: 10px; /* 왼쪽 여백 추가 */
+}
+
+#search-nickname::placeholder {
+    color: lightgray; /* 원하는 색상으로 변경 */
+    font-size: 14px; /* 원하는 폰트 크기로 변경 */
+}
+
+.group-cancel-button, .group-confirm-button {
+    width: 50px;
+    height: 32px;
+    margin-top: 28px;
+    margin-right: 18px;
+    background-color: white; /* 버튼 배경 색 */
+    padding: 4px 8px; /* 여백 */
+    cursor: pointer; /* 커서 모양 변경 */
+    border-radius: 10px;
+    border: 1px solid lightgray;
+}
+
+#make-button {
+    width: 50px;
+    height: 32px;
+    margin-left: 5px;
+    background-color: white; /* 버튼 배경 색 */
+    padding: 4px 8px; /* 여백 */
+    cursor: pointer; /* 커서 모양 변경 */
+    border-radius: 10px;
+    border: 1px solid lightgray;
+}
+
+#make-button:hover, .group-cancel-button:hover, .group-confirm-button:hover, .interest-selection-button:hover {
+    background-color: #edebeb4f;
+}
+
+.group-boss {
+    margin-top: 10px;
+}
+
+#group-boss {
+    width: 30%;
+    height: 30px;
+    border-radius: 10px;
+    border: 1px solid lightgray;
+    padding: 10px; /* 입력 필드 내부 여백 추가 */
+    padding-left: 10px; /* 왼쪽 여백 추가 */
+}
+
+#group-boss::placeholder {
+    color: lightgray; /* 원하는 색상으로 변경 */
+    font-size: 14px; /* 원하는 폰트 크기로 변경 */
+}
+
+.modal-footer {
+  position: fixed; /* 고정 위치 설정 */
+  bottom: 0; /* 아래쪽에 위치 */
+  right: 0; /* 왼쪽에 위치 */
+  display: flex;
+  justify-content: flex-start; /* 버튼을 왼쪽으로 정렬 */
+  margin: 10px; /* 버튼과 모달 내용 사이의 간격 */
+}
+
+.nickname-invite {
+    display: flex;
+    margin-top: 10px;
+    width: 360px;;
+    height: 240px;
+    border-radius: 10px;
+    border: 1px solid lightgray;
+}
+
+.selected-nickname {
+    margin-left: 30px;
+    margin-top: 10px;
+    width: 359px;
+    height: 240px;
+    border-radius: 10px;
+    border: 1px solid lightgray;
+
+}
+
+.group-cards {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 30px;
+  justify-content: space-between;
+  margin-right: 200px;
+}
+
+.group-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  width: 250px; /* 2개씩 배치 */
+  height: 300px;
+}
+
+.group-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.interest-selection-button {
+    width: 100px;
+    height: 30px;
+    margin-top: 10px;
+    background-color: white; /* 버튼 배경 색 */
+    padding: 4px 8px; /* 여백 */
+    cursor: pointer; /* 커서 모양 변경 */
+    border-radius: 10px;
+    border: 1px solid lightgray;
+}

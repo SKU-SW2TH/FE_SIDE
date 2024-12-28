@@ -78,3 +78,37 @@
     color: white;
     border-radius: 10px;
   }
+
+  .notification-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .notification-dot {
+    position: absolute;
+    top: 5px;
+    right: -1px;
+    width: 4px;
+    height: 4px;
+    background-color: #ff0000;
+    border-radius: 50%;
+  }
+
+  .notification-hover-text {
+    display: none;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    top: 100%;
+    left: 80%;
+    transform: translateX(-50%);
+    z-index: 1000;
+  }
+
+  .notification-container:hover .notification-hover-text {
+    display: block;
+  }

@@ -1,9 +1,11 @@
 // Notification.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NotificationList from './NotificationList';
 import styled from 'styled-components';
 import MyPageSideNav from './MyPageSideNav'; // MyPageSideNav import
 import neko from '../../assets/images/neko.png';
+import axios from 'axios';
+import { Pagination } from '@mui/material';
 
 const PageContainer = styled.div`
     display: grid;
@@ -44,13 +46,104 @@ font-size: 15px;
 color: #999;
 `;
 
-function Interest() {
-    const [notifications, setNotifications] = useState([
-        { id: 1, type: 'comment-reply', name: 'ggdaero99', date: '1일전' },
-        { id: 2, type: 'comment-like', name: 'ggdaero99', date: '1일전' },
-        { id: 3, type: 'article-reply', name: 'ggdaero99', date: '3일전' },
-        { id: 4, type: 'article-like', name: 'ggdaero99', date: '2일전' },
-    ]);
+const PaginationContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+`;
+
+function Notification() {
+    const [totalPages, setTotalPages] = useState(0);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [notifications, setNotifications] = useState([]);
+    const [totalElements, setTotalElements] = useState(0);
+    const [unreadCount, setUnreadCount] = useState(0);
+
+    // 알림 읽음 처리 API 함수 추가
+    const markNotificationsAsRead = async () => {
+        const token = localStorage.getItem('accessToken');
+        try {
+            const response = await axios.patch(
+                'http://ec2-3-39-85-170.ap-northeast-2.compute.amazonaws.com:8080/api/member/update/notification/read',
+                {}, 
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                }
+            );
+            // 성공 메시지 콘솔에 출력
+            console.log('알림 읽음 처리가 완료되었습니다.');
+            
+            setTimeout(() => {
+                fetchUnreadCount();
+            }, 1000);
+        } catch (error) {
+            console.error('알림 읽음 처리 중 오류 발생:', error);
+        }
+    };
+
+    useEffect(() => {
+        const fetchNotifications = async () => {
+            try {
+                const accessToken = localStorage.getItem('accessToken');
+                const response = await axios.get('http://ec2-3-39-85-170.ap-northeast-2.compute.amazonaws.com:8080/api/member/notificationList',
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`,
+                        },
+                        params: {
+                            page: currentPage,
+                            size: 10,
+                            sort: 'createdAt'
+                        }
+                    }
+                );
+
+                if (response.status === 200) {
+                    const { totalElements, totalPages, content } = response.data;
+                    setNotifications(content);
+                    setTotalPages(totalPages);
+                    setTotalElements(totalElements);
+                }
+            } catch (error) {
+                console.error('알림을 불러오는데 실패했습니다:', error);
+            }
+        };
+
+        fetchNotifications();
+        // 컴포넌트가 마운트된 후 1초 뒤에 읽음 처리
+        const timer = setTimeout(() => {
+            markNotificationsAsRead();
+        }, 1000);
+
+        return () => clearTimeout(timer);
+    }, [currentPage]);
+
+    const handlePageChange = (event, value) => {
+        setCurrentPage(value - 1);
+    };
+
+    const fetchUnreadCount = async () => {
+        const token = localStorage.getItem('accessToken');
+        try {
+            const response = await axios.get('http://ec2-3-39-85-170.ap-northeast-2.compute.amazonaws.com:8080/api/member/notification/unread', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            
+            if (response.status === 200) {
+                setUnreadCount(response.data);
+            }
+        } catch (error) {
+            console.error('읽지 않은 알림 수 확인 중 오류 발생:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUnreadCount();
+    }, []);
 
     return (
         <PageContainer>
@@ -59,18 +152,32 @@ function Interest() {
                 <PageLabel>
                     <MainTitle>알림</MainTitle>
                 </PageLabel>
-                {notifications.length > 0 ? (
-                        <NotificationList notifications={notifications} />
-                    ) : (
-                        <>
-                            <ImageSpan><img src={neko} alt="neko" /></ImageSpan>
+                {totalElements > 0 ? (
+                    <>
+                        <NotificationList 
+                            notifications={notifications} 
+                            totalElements={totalElements} 
+                            unreadCount={unreadCount}
+                        />
+                        <PaginationContainer>
+                            <Pagination 
+                                count={totalPages} 
+                                page={currentPage + 1} 
+                                onChange={handlePageChange}
+                                color="primary"
+                            />
+                        </PaginationContainer>
+                    </>
+                ) : (
+                    <>
+                        <ImageSpan><img src={neko} alt="neko" /></ImageSpan>
                         <TextSpan><p>알림이 없습니다.</p></TextSpan>
                         <TextSpanSub><p>알림설정을 통해 알림을 받을 수 있어요.</p></TextSpanSub>
-                        </>
+                    </>
                 )}
             </div>
         </PageContainer>
     );
 }
 
-export default Interest;
+export default Notification;

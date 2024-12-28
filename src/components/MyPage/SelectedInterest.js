@@ -63,44 +63,46 @@ const RemoveButton = styled.span`
 `;
 
 const SelectedInterest = ({ selectedInterests, onRemoveInterest }) => {
-  const interestIcons = {
-    React: require('../../assets/images/react.svg').default,
-    Angular: require('../../assets/images/angular.svg').default,
-    'Vue.js': require('../../assets/images/vuedotjs.svg').default,
-    Svelte: require('../../assets/images/svelte.svg').default,
-    jQuery: require('../../assets/images/jquery.svg').default,
-    'Backbone.js': require('../../assets/images/backbonedotjs.svg').default,
-    Preact: require('../../assets/images/preact.svg').default,
-    'Ember.js': require('../../assets/images/emberdotjs.svg').default,
-    'Node.js': require('../../assets/images/nodedotjs.svg').default,
-    Spring: require('../../assets/images/spring.svg').default,
-    SpringBoot: require('../../assets/images/springboot.svg').default,
-    Django: require('../../assets/images/django.svg').default,
-    Flask: require('../../assets/images/flask.svg').default,
-    Laravel: require('../../assets/images/laravel.svg').default,
-    'Ruby on Rails': require('../../assets/images/rubyonrails.svg').default,
-    CakePHP: require('../../assets/images/cakephp.svg').default,
-    'Phoenix Frameword': require('../../assets/images/phoenixframework.svg').default,
-    Java: require('../../assets/images/java.svg').default,
-    Python: require('../../assets/images/python.svg').default,
-    C: require('../../assets/images/c.svg').default,
-    'C++': require('../../assets/images/cplusplus.svg').default,
-    JavaScript: require('../../assets/images/javascript.svg').default,
-    Go: require('../../assets/images/go.svg').default,
-    PHP: require('../../assets/images/php.svg').default,
-    Ruby: require('../../assets/images/ruby.svg').default,
-    Kotlin: require('../../assets/images/kotlin.svg').default,
-    Swift: require('../../assets/images/swift.svg').default
+  const interestData = {
+    5: { name: 'React', icon: require('../../assets/images/react.svg').default },
+    6: { name: 'Angular', icon: require('../../assets/images/angular.svg').default },
+    7: { name: 'Vue.js', icon: require('../../assets/images/vuedotjs.svg').default },
+    8: { name: 'Svelte', icon: require('../../assets/images/svelte.svg').default },
+    9: { name: 'jQuery', icon: require('../../assets/images/jquery.svg').default },
+    10: { name: 'Backbone.js', icon: require('../../assets/images/backbonedotjs.svg').default },
+    11: { name: 'Preact', icon: require('../../assets/images/preact.svg').default },
+    12: { name: 'Ember.js', icon: require('../../assets/images/emberdotjs.svg').default },
+    13: { name: 'Node.js', icon: require('../../assets/images/nodedotjs.svg').default },
+    14: { name: 'Spring', icon: require('../../assets/images/spring.svg').default },
+    15: { name: 'SpringBoot', icon: require('../../assets/images/springboot.svg').default },
+    16: { name: 'Django', icon: require('../../assets/images/django.svg').default },
+    17: { name: 'Flask', icon: require('../../assets/images/flask.svg').default },
+    18: { name: 'Laravel', icon: require('../../assets/images/laravel.svg').default },
+    19: { name: 'Ruby on Rails', icon: require('../../assets/images/rubyonrails.svg').default },
+    20: { name: 'CakePHP', icon: require('../../assets/images/cakephp.svg').default },
+    21: { name: 'Java', icon: require('../../assets/images/java.svg').default },
+    22: { name: 'Python', icon: require('../../assets/images/python.svg').default },
+    23: { name: 'C', icon: require('../../assets/images/c.svg').default },
+    24: { name: 'C++', icon: require('../../assets/images/cplusplus.svg').default },
+    25: { name: 'JavaScript', icon: require('../../assets/images/javascript.svg').default },
+    26: { name: 'Go', icon: require('../../assets/images/go.svg').default },
+    27: { name: 'PHP', icon: require('../../assets/images/php.svg').default },
+    28: { name: 'Ruby', icon: require('../../assets/images/ruby.svg').default },
+    29: { name: 'Kotlin', icon: require('../../assets/images/kotlin.svg').default },
+    30: { name: 'Swift', icon: require('../../assets/images/swift.svg').default }
   };
 
   return (
     <GridContainer>
-      {selectedInterests.map((interest) => (
-        <InterestItem key={interest}>
-          <Checkmark>✓</Checkmark> {/* 체크 표시 */}
-          <InterestIcon src={interestIcons[interest]} alt={interest} />
-          <InterestLabel>{interest}</InterestLabel>
-          <RemoveButton onClick={() => onRemoveInterest(interest)}>⨉</RemoveButton> {/* X 표시 */}
+      {selectedInterests.map((interestId) => (
+        <InterestItem key={interestId}>
+          <Checkmark>✓</Checkmark>
+          <InterestIcon 
+            src={interestData[interestId].icon} 
+            alt={interestData[interestId].name} 
+          />
+          <InterestLabel>{interestData[interestId].name}</InterestLabel>
+          <RemoveButton onClick={() => onRemoveInterest(interestId)}>⨉</RemoveButton>
         </InterestItem>
       ))}
     </GridContainer>

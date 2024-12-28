@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
 import MyPageSideNav from "./MyPageSideNav"; 
 import InterestCategory from './InterestCategory'; 
 import SelectedInterest from './SelectedInterest'; // SelectedInterest import
+import axios from 'axios';
 
 const PageContainer = styled.div`
     display: grid;
@@ -75,12 +76,48 @@ const AddCategoryButton = styled.div`
 
 function Interest() {
     const [selectedItems, setSelectedItems] = useState({
+        '프로그래밍 언어': [],
         프론트: [],
-        백엔드: [],
-        프로그래밍언어: [],
+        백엔드: []
     });
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [interestData, setInterestData] = useState([]);
+
+    useEffect(() => {
+        const fetchInterests = async () => {
+            try {
+                const accessToken = localStorage.getItem('accessToken');
+                const response = await axios.get('http://ec2-3-39-85-170.ap-northeast-2.compute.amazonaws.com:8080/api/member/info',
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`,
+                        }
+                    }
+                );
+                const data = response.data.interests;
+                
+                const allInterestIds = data.map(item => item.interestId);
+                setInterestData(allInterestIds);
+
+                const categorizedData = {
+                    '프로그래밍 언어': data.filter(item => item.interestId >= 21 && item.interestId <= 30).map(item => item.interestId),
+                    프론트: data.filter(item => item.interestId >= 5 && item.interestId <= 12).map(item => item.interestId),
+                    백엔드: data.filter(item => item.interestId >= 13 && item.interestId <= 20).map(item => item.interestId)
+                };
+                
+                setSelectedItems(categorizedData);
+            } catch (error) {
+                console.error('관심분야를 불러오는데 실패했습니다:', error);
+            }
+        };
+
+        fetchInterests();
+    }, []);
+
+    useEffect(() => {
+        console.log("interestData: ", interestData);
+    }, [interestData]);
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
@@ -92,14 +129,33 @@ function Interest() {
         }));
     };
 
-    const handleRemoveInterest = (interest) => {
-        setSelectedItems((prevState) => {
-            const updatedItems = { ...prevState };
-            Object.keys(updatedItems).forEach((key) => {
-                updatedItems[key] = updatedItems[key].filter(item => item !== interest);
+    const handleRemoveInterest = async (interestId) => {
+        try {
+            const accessToken = localStorage.getItem('accessToken');
+
+            const response = await axios({
+                method: 'delete',
+                url: 'http://ec2-3-39-85-170.ap-northeast-2.compute.amazonaws.com:8080/api/member/delete/interest',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                },
+                data: { ids: [interestId] }  // RequestBody로 전송
             });
-            return updatedItems;
-        });
+
+            if (response.status === 200) {
+                setSelectedItems(prevState => {
+                    const updatedItems = {};
+                    Object.keys(prevState).forEach(key => {
+                        updatedItems[key] = prevState[key].filter(item => item !== interestId);
+                    });
+                    return updatedItems;
+                });
+                console.log("삭제완료", response);
+            }
+        } catch (error) {
+            console.error('관심사 삭제 실패:', error);
+        }
     };
 
     return (
@@ -113,7 +169,7 @@ function Interest() {
                         <Divider01 />
                     </SubTitleContainer01>
                     <SelectedInterest 
-                        selectedInterests={selectedItems.프로그래밍언어} 
+                        selectedInterests={selectedItems['프로그래밍 언어']}
                         onRemoveInterest={handleRemoveInterest} 
                     />
                     <SubTitleContainer>
@@ -138,7 +194,8 @@ function Interest() {
                 <InterestCategory
                     isOpen={isModalOpen}
                     onClose={closeModal}
-                    onSelectionChange={handleCategorySelection} 
+                    onSelectionChange={handleCategorySelection}
+                    initialSelectedItems={interestData}
                 />
                 <FloatingAddButton onClick={openModal}>추가하기</FloatingAddButton>
             </AddCategoryButton>

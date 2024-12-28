@@ -55,9 +55,10 @@ function LoginPopup({ closePopup, onLoginSuccess }) {
         const { refreshToken } = response.data;
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
+        localStorage.setItem('email', email);
         console.log('로그인 성공, accessToken:', accessToken);
         console.log('refreshToken', refreshToken);
-
+        console.log('email', email);
         if (onLoginSuccess) {
           onLoginSuccess();
         }

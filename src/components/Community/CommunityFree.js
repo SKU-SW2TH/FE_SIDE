@@ -1,24 +1,97 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "../../styles/Community.css";
+import "../../styles/Board.css";
 import CommunitySideNav from "./CommunitySideNav";
 import { Link } from 'react-router-dom';
-import Board from './Board';
-import PostForm from './PostForm'; 
+import DOMPurify from 'dompurify';
+import eyeCommunity from '../../assets/images/eye-commu.png';
+import thumb from '../../assets/images/thumb.png';
+import chat from '../../assets/images/chat.png';
+import neko from '../../assets/images/neko.png';
+import Title from '../ReusableComponents/Title';
+import axios from 'axios';
 
 const CommunityFree = () => {
-  const [posts, setPosts] = useState([]);  // 게시글 데이터
-  const [currentPage, setCurrentPage] = useState(1);  // 현재 페이지 번호
-  const postsPerPage = 2;  // 한 페이지에 보여줄 게시글 수
+  const [isLoading, setIsLoading] = useState(true);
+  const [sortBy, setSortBy] = useState('createdAt');
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [searchType, setSearchType] = useState('title+author');
+  const [totalPages, setTotalPages] = useState(0);
+  const [postsData, setPostsData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(() => {
+    return parseInt(localStorage.getItem('freeCurrentPage')) || 0;
+  });
+  const [activeSort, setActiveSort] = useState('createdAt');
 
-  // 게시글 추가 함수
-  const addPost = (postData) => {
-    const newPost = { id: Date.now(), ...postData }; // 게시글에 ID 추가
-    setPosts([newPost, ...posts]); // 새로운 게시글 추가
+  const getPostId = async () => {
+    try {
+      console.log("sortBy:" + sortBy);
+      const response = await axios.get(`http://ec2-3-39-85-170.ap-northeast-2.compute.amazonaws.com:8080/api/post`, {
+        params: {
+          category: 'FREE',
+          page: currentPage,
+          sortBy: sortBy,
+          searchType: searchType,
+          keyword: searchKeyword
+        }
+      });
+      if(response.status==200){
+        const posts = response.data.content;
+      
+        setTotalPages(response.data.totalPages);
+
+        console.log(response.data);
+
+        const formattedPosts = posts.map(post => ({
+          id: post.id,
+          title: post.title,
+          content: post.content,
+          name: post.postAuthor.nickname,
+          time: new Date(post.createdAt).toLocaleString(),
+          like: post.likeCount,
+          view: post.viewCount,
+          reply: post.commentCount,
+        }));
+
+        console.log(formattedPosts);
+        setPostsData(formattedPosts);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error("게시글 ID 가져오기 실패:", error);
+    }
   };
 
-  // 페이지 변경 핸들러
-  const handlePageChange = (pageNumber) => {
+  useEffect(() => {
+    getPostId();
+  }, [sortBy, currentPage]);
+
+
+  const createMarkup = (htmlContent) => {
+    const config = {
+      ADD_TAGS: [],
+      ADD_ATTR: ['src', 'alt', 'width', 'height']
+    };
+    return { __html: DOMPurify.sanitize(htmlContent, config) };
+  };
+
+  const handleSortChange = (sortType) => {
+    console.log("정렬 방식 변경:", sortType);
+    setSortBy(sortType);
+    setCurrentPage(0);
+    setActiveSort(sortType);
+  };
+
+  const handlePageChange = async (pageNumber) => {
+    localStorage.setItem('freeCurrentPage', pageNumber);
     setCurrentPage(pageNumber);
+    await getPostId();
+    window.location.reload();
+  };
+
+  const handleSearch = async () => {
+    setCurrentPage(0);
+    await getPostId();
   };
 
   return (
@@ -27,26 +100,121 @@ const CommunityFree = () => {
       <div>
         <p className='community-title'>자유 게시판</p>
         <div className='community-input'>
-          <input id='community-input' placeholder='궁금한 내용을 검색해 보세요!' />
-          <button className='community-search-button'>검색</button>
+          <select 
+            onChange={(e) => setSearchType(e.target.value)} 
+            value={searchType} 
+            style={{ 
+              marginRight: '10px', 
+              padding: '7px', 
+              border: '1px solid #ccc', 
+              borderRadius: '4px', 
+              backgroundColor: 'white', 
+              fontSize: '14px',
+              outline: 'none'
+            }}
+          >
+              <option value="title">제목</option>
+              <option value="author">작성자</option>
+              <option value="title+author">제목 + 작성자</option>
+          </select>
+          <input 
+            id='community-input' 
+            placeholder='궁금한 내용을 검색해 보세요!' 
+            onChange={(e) => setSearchKeyword(e.target.value)} 
+            style={{ marginRight: '10px' }}
+          />
+          <button className='community-search-button' onClick={handleSearch}>검색</button>
         </div>
         <div className='community-select'>
-          <Link to="/free" id='select'>ㆍ최신순</Link>
-          <Link to="/free" id='select'>ㆍ좋아요순</Link>
-          <Link to="/free" id='select'>ㆍ댓글많은순</Link>
-          <Link to="/free/post-form">
-            <button className='write-button'>✎ 글쓰기</button>
-          </Link>
+          <button 
+            onClick={() => handleSortChange('createdAt')} 
+            className={activeSort === 'createdAt' ? 'active-searchType' : 'select'}
+          >ㆍ최신순</button>
+          <button 
+            onClick={() => handleSortChange('commentCount')} 
+            className={activeSort === 'commentCount' ? 'active-searchType' : 'select'}
+          >ㆍ댓글순</button>
+          <button 
+            onClick={() => handleSortChange('viewCount')} 
+            className={activeSort === 'viewCount' ? 'active-searchType' : 'select'}
+          >ㆍ조회순</button>
+          <span className='community-select-line'>
+            <Link to="/free/post-form" className='write-button'>
+              ✎ 글쓰기
+            </Link>
+          </span>
         </div>
-        <div className="App">
-          <PostForm addPost={addPost} />  {/* 게시글 추가 폼 */}
-          <Board
-            posts={posts} // 게시글 목록 전달
-            currentPage={currentPage}
-            postsPerPage={postsPerPage}
-            handlePageChange={handlePageChange}
-          />
+        <div>
+          {isLoading ? (
+            <p></p>
+          ) : postsData.length === 0 ? (
+            <div className='neko-container'>
+              <img src={neko} alt='네코' className='neko-img' />
+              <p>게시글이 없습니다.</p>
+            </div>
+          ) : (
+            <ul className="post-list">
+              {postsData.map((post) => (
+                <li className='post-container' key={post.id}>
+                  <Link to={`/post/${post.id}`} className='article-link'>
+                    <Title title={post.title} />
+                    <div 
+                      className='content'
+                      dangerouslySetInnerHTML={createMarkup(post.content)}
+                    />
+                    <div className='discript'>
+                      <span className='name-time'>
+                        {post.name} {post.time}
+                      </span>
+                      <span className='like-view-reply'>
+                        <span className='like'><img src={thumb} alt='좋아요' className='like-img'/>{post.like}</span>
+                        <span className='view'><img src={eyeCommunity} alt='조회수' className='view-img' />{post.view}</span>
+                        <span className='reply'><img src={chat} alt='댓글' className='reply-img' />{post.reply}</span>
+                      </span>
+                    </div>
+                    <hr className='hr-length'/>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
+
+        {postsData.length > 0 && (
+          <div className="pagination">
+            {(() => {
+              const adjustedCurrentPage = currentPage + 1;
+              const pageGroup = Math.ceil(adjustedCurrentPage / 5);
+              const startPage = (pageGroup - 1) * 5 + 1;
+              const endPage = Math.min(startPage + 4, totalPages);
+              const pagesToShow = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+              return (
+                <>
+                  <button onClick={() => handlePageChange(adjustedCurrentPage - 2)} disabled={adjustedCurrentPage === 1 || adjustedCurrentPage !== startPage}>
+                    이전
+                  </button>
+
+                  {pagesToShow.map(number => (
+                    <button 
+                      key={number} 
+                      onClick={() => {
+                        handlePageChange(number-1);
+                      }} 
+                      className={number === adjustedCurrentPage ? 'active' : ''}
+                      style={{ color: number === adjustedCurrentPage ? 'black' : 'lightgray' }}
+                    >
+                      {number}
+                    </button>
+                  ))}
+
+                  <button onClick={() => handlePageChange(adjustedCurrentPage)} disabled={adjustedCurrentPage === totalPages || adjustedCurrentPage !== endPage}>
+                    다음
+                  </button>
+                </>
+              );
+            })()}
+          </div>
+        )}
       </div>
     </div>
   );

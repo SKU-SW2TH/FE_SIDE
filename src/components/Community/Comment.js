@@ -61,7 +61,7 @@ const Comment = ({ comment, onReply, onDelete, onEdit }) => {
         <p>{comment.text}</p>
       )}
       <button className="comment-button" onClick={handleLikeClick}>
-        좋아요 {hasLiked ? comment.likes : comment.likes}
+        ♡ {hasLiked ? comment.likes : comment.likes}
       </button>
       <button className="comment-button" onClick={handleReplyClick}>대댓글 달기</button>
       <button className="comment-button" onClick={toggleEdit}>수정</button>

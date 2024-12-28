@@ -35,8 +35,6 @@ function SignUp() {
     const [showModal, setShowModal] = useState(false);
     const [modalContent, setModalContent] = useState("");
 
-    const nevigate = useNavigate();
-
     // 이메일 유효성 검사 함수
     const validateEmail = (email) => {
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

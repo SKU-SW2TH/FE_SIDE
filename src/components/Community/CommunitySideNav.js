@@ -24,9 +24,9 @@ function CommunitySideNav({ userName, profileImage }) {
         ·질문
         </NavLink>
         <NavLink 
-        to="/gathering" 
-        className={isEditProfileActive() ? 'active-link' : 'inactive-link'}>
-        ·스터디
+        to="/written" 
+        className={({ isActive }) => (isActive ? 'active-link' : 'inactive-link')}>
+        ·작성한 게시글
         </NavLink>
     </nav>
     </aside>

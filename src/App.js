@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MyPage from './components/MyPage/MyPage';
 import CommunityFree from './components/Community/CommunityFree';
-import CommunityGathering from './components/Community/CommunityGathering';
+import CommunityGroup from './components/Community/CommunityGroup';
+import CommunityStudy from './components/Community/CommunityStudy';
+import Written from './components/Community/Written';
 import CommunityQuestion from './components/Community/CommunityQuestion';
 import MyPageStudy from './components/MyPage/MyPageStudy';
 import MyPageQuestion from './components/MyPage/MyPageQuestion';
@@ -20,13 +22,14 @@ import ResetPassword from './components/MyPage/ResetPassword';
 import NoticeDetails from './components/StudyGroup/NoticeDetails';
 import StudyGroup from './components/StudyGroup/StudyGroup';
 import Calender from './components/StudyGroup/Calendar'
+import { AuthProvider } from './components/ReusableComponents/AuthContext';
 import Header from './components/ReusableComponents/Header';
 import Footer from './components/ReusableComponents/Footer';
 import FAQ from './components/ReusableComponents/FAQ'; 
 import FreePostForm from './components/Community/FreePostForm';
 import QuestionPostForm from './components/Community/QuestionPostForm';
+import StudyPostForm from './components/Community/StudyPostForm';
 import PostDetail from './components/Community/PostDetail';
-import PostForm from './components/Community/PostForm';
 import { SelectedChannelProvider } from './SelectedChannelContext';
 
 
@@ -40,6 +43,7 @@ function App() {
   
 
   return(
+  <AuthProvider>
   <BrowserRouter>
   <SelectedChannelProvider>
     <Header/>
@@ -48,6 +52,7 @@ function App() {
       <Route path='/' element={<Home/>}/>
       <Route path='/free/post-form' element={<FreePostForm/>}/>
       <Route path='/question/post-form' element={<QuestionPostForm/>}/>
+      <Route path='/study/post-form' element={<StudyPostForm/>}/>
       <Route path='/login-popup' element={<LoginPopup/>}/>
       <Route path='/mypage' element={<MyPage/>}/>
       <Route path='/mypage-free' element={<MyPageFree/>}/>
@@ -55,12 +60,14 @@ function App() {
       <Route path='/mypage-study' element={<MyPageStudy/>}/>
       <Route path='/find-password' element={<FindPassword/>}/>
       <Route path='/signup' element={<SignUp/>}/>
+      <Route path='/written' element={<Written/>}/>
       <Route path='/reset-password' element={<ResetPassword/>}/>
       <Route path='/edit-notification' element={<EditNotification/>}/>
       <Route path='/notification' element={<Notification/>}/>
       <Route path='/free' element={<CommunityFree/>}/>
-      <Route path='/interest' element={<Interest/>}/>
-      <Route path='/gathering' element={<CommunityGathering/>}/>  
+      <Route path='/study' element={<CommunityStudy/>}/>
+      <Route path='/group' element={<CommunityGroup/>}/>
+      <Route path='/interest' element={<Interest/>}/> 
       <Route path='/question' element={<CommunityQuestion/>}/>
        {/*브라우저에서 path에 따라 element가 렌더링된다*/ }
       <Route path='/StudyGroup' element={<StudyGroup />} />
@@ -69,13 +76,13 @@ function App() {
       <Route path='/StudyGroup/NoticeDetails' element={<NoticeDetails />} />  {/*공지사항 세부내용 페이지*/}
       <Route path="/free" element={<CommunityFree posts={posts} />} />
       <Route path="/post/:postId" element={<PostDetail posts={posts} />} /> {/* PostDetail로 이동 */}
-      <Route path="/create" element={<PostForm posts={posts} setPosts={setPosts} />} /> {/* 글쓰기 */}
       </Routes>
     </div>
     <Footer />
     <FAQ></FAQ>
     </SelectedChannelProvider>
     </BrowserRouter>
+    </AuthProvider>
   );
 }
 
