@@ -412,11 +412,16 @@ body {
 }
 
 #delete-article-button {
-  margin-left: 640px;
+  margin-left: 580px;
 }
 
 .reply-submit-container {
   margin-top: 5px;
   margin-left: 1023px;
   margin-bottom: 20px;
+}
+
+.edit-comment-input {
+  margin-top: 10px;
+  height: 30px;
 }

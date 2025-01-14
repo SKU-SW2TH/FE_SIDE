@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
+import { Link } from 'react-router-dom';
 
-// 알림 아이템 스타일 정의
 const NotificationItemContainer = styled.div`
     border: 1px solid #ddd;
     padding: 10px;
@@ -16,34 +15,34 @@ const NotificationItemContainer = styled.div`
     font-weight: ${props => props.$unread ? 'bold' : 'normal'};
 `;
 
-// 알림 아이템 컴포넌트
-function NotificationItem({ notification, totalElements = 0, unreadCount = 0 }) {
-    const isUnread = notification.targetId > (totalElements - unreadCount);
-
+function NotificationItem({ notification, isUnread }) {
     const getTimeAgo = (createdAt) => {
-      const now = new Date();
-      const created = new Date(createdAt);
-      const diffTime = Math.abs(now - created);
-      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-      const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
-      const diffMinutes = Math.floor(diffTime / (1000 * 60));
+        const now = new Date();
+        const created = new Date(createdAt);
+        const diffTime = Math.abs(now - created);
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+        const diffMinutes = Math.floor(diffTime / (1000 * 60));
 
-      if (diffDays > 0) {
-          return `${diffDays}일 전`;
-      } else if (diffHours > 0) {
-          return `${diffHours}시간 전`;
-      } else if (diffMinutes > 0) {
-          return `${diffMinutes}분 전`;
-      } else {
-          return '방금 전';
-      }
-  };
+        if (diffDays > 0) {
+            return `${diffDays}일 전`;
+        } else if (diffHours > 0) {
+            return `${diffHours}시간 전`;
+        } else if (diffMinutes > 0) {
+            return `${diffMinutes}분 전`;
+        } else {
+            return '방금 전';
+        }
+    };
 
-  return (
-    <NotificationItemContainer $unread={isUnread}>
-      {notification.content} <span>{getTimeAgo(notification.createdAt)}</span>
-    </NotificationItemContainer>
-  );
+    return (
+        <NotificationItemContainer $unread={isUnread}>
+            <Link to={`/post/${notification.targetId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                {notification.content}
+            </Link>
+            <span>{getTimeAgo(notification.createdAt)}</span>
+        </NotificationItemContainer>
+    );
 }
 
 export default NotificationItem;

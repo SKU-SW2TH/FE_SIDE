@@ -156,7 +156,6 @@ function Notification() {
                     <>
                         <NotificationList 
                             notifications={notifications} 
-                            totalElements={totalElements} 
                             unreadCount={unreadCount}
                         />
                         <PaginationContainer>

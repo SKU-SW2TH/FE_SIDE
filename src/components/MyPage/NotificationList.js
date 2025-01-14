@@ -1,14 +1,18 @@
 import React from 'react';
-import NotificationItem from './NotificationItem'; // 위에서 만든 컴포넌트
+import NotificationItem from './NotificationItem';
 
-function NotificationList({ notifications, totalElements, unreadCount }) {
-  return (
-    <div>
-      {notifications.map((notification) => (
-        <NotificationItem key={notification.id} notification={notification} totalElements={totalElements} unreadCount={unreadCount} />
-      ))}
-    </div>
-  );
+function NotificationList({ notifications, unreadCount }) {
+    return (
+        <div>
+            {notifications.map((notification, index) => (
+                <NotificationItem
+                    key={notification.id}
+                    notification={notification}
+                    isUnread={index < unreadCount} // unreadCount만큼 읽지 않은 상태 처리
+                />
+            ))}
+        </div>
+    );
 }
 
 export default NotificationList;

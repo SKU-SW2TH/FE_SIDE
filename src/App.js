@@ -27,6 +27,7 @@ import Header from './components/ReusableComponents/Header';
 import Footer from './components/ReusableComponents/Footer';
 import FAQ from './components/ReusableComponents/FAQ'; 
 import FreePostForm from './components/Community/FreePostForm';
+import EditForm from './components/Community/EditForm';
 import QuestionPostForm from './components/Community/QuestionPostForm';
 import StudyPostForm from './components/Community/StudyPostForm';
 import PostDetail from './components/Community/PostDetail';
@@ -51,6 +52,7 @@ function App() {
       <Routes>
       <Route path='/' element={<Home/>}/>
       <Route path='/free/post-form' element={<FreePostForm/>}/>
+      <Route path='/edit-form/:postId' element={<EditForm />} />
       <Route path='/question/post-form' element={<QuestionPostForm/>}/>
       <Route path='/study/post-form' element={<StudyPostForm/>}/>
       <Route path='/login-popup' element={<LoginPopup/>}/>

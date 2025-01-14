@@ -34,6 +34,8 @@ function PostDetail() {
   const [replyToReportId, setReplyToReportId] = useState(null); // 신고할 대댓글 ID 저장
   const [commentToReportId, setCommentToReportId] = useState(null);
   const [isReplyReportModalOpen, setIsReplyReportModalOpen] = useState(false); // 대댓글 신고 모달 상태 추가
+  const [isEditingCommentId, setIsEditingCommentId] = useState(null); // 수정할 댓글 ID 상태 추가
+  const [editingCommentText, setEditingCommentText] = useState(''); // 수정할 댓글 내용 상태 추가
   const navigate = useNavigate();
 
   const reportReasons = [
@@ -497,7 +499,7 @@ function PostDetail() {
     }
   };
 
-  // 대댓글 좋아요 핸���러 추가
+  // 대댓글 좋아요 핸들러 추가
   const handleReplyToggleLike = (parentCommentId, replyId) => {
     if (replyLiked[replyId]) {
       handleDeleteReplyLike(parentCommentId, replyId); // 좋아요가 눌려있으면 좋아요 취소
@@ -575,6 +577,89 @@ function PostDetail() {
     }
   };
 
+  // 댓글 수정 핸들러 추가
+  const handleEditButtonClick = (commentId, content) => {
+    setIsEditingCommentId(commentId); // 수정할 댓글 ID 설정
+    setEditingCommentText(content); // 수정할 댓글 내용 설정
+  };
+
+  // 댓글 수정 완료 핸들러
+  const handleEditCommentSubmit = async (commentId) => {
+    await handleEditComment(commentId); // API 요청
+    setIsEditingCommentId(null); // 수정 모드 종료
+    setEditingCommentText(''); // 입력 필드 초기화
+  };
+
+  // 댓글 수정 핸들러 추가
+  const handleEditComment = async (commentId) => {
+    try {
+      const accessToken = localStorage.getItem('accessToken');
+      const response = await axios.patch(
+        `http://ec2-3-39-85-170.ap-northeast-2.compute.amazonaws.com:8080/api/post/${postId}/comment/${commentId}/edit?content=${encodeURIComponent(editingCommentText)}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("댓글 수정 성공:", response.status);
+        // 댓글 목록을 다시 가져와서 상태 업데이트
+        const updatedPost = await axios.get(
+          `http://ec2-3-39-85-170.ap-northeast-2.compute.amazonaws.com:8080/api/post/${postId}`
+        );
+        if (updatedPost.status === 200) {
+          setComments(updatedPost.data.commentsResponse || []);
+        }
+      }
+    } catch (error) {
+      console.error("댓글 수정 중 오류:", error);
+    }
+  };
+
+  // 대댓글 수정 핸들러 추가
+  const handleEditReply = async (parentCommentId, replyId) => {
+    try {
+      const accessToken = localStorage.getItem('accessToken');
+      const response = await axios.patch(
+        `http://ec2-3-39-85-170.ap-northeast-2.compute.amazonaws.com:8080/api/post/${postId}/comment/${parentCommentId}/reply/${replyId}/edit?content=${encodeURIComponent(editingCommentText)}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("대댓글 수정 성공:", response.status);
+        // 댓글 목록을 다시 가져와서 상태 업데이트
+        const updatedPost = await axios.get(
+          `http://ec2-3-39-85-170.ap-northeast-2.compute.amazonaws.com:8080/api/post/${postId}`
+        );
+        if (updatedPost.status === 200) {
+          setComments(updatedPost.data.commentsResponse || []);
+        }
+      }
+    } catch (error) {
+      console.error("대댓글 수정 중 오류:", error);
+    }
+  };
+
+  // 대댓글 수정 버튼 클릭 핸들러 추가
+  const handleEditReplyButtonClick = (parentCommentId, replyId, content) => {
+    setIsEditingCommentId(replyId); // 수정할 대댓글 ID 설정
+    setEditingCommentText(content); // 수정할 대댓글 내용 설정
+  };
+
+  // 대댓글 수정 완료 핸들러
+  const handleEditReplySubmit = async (parentCommentId, replyId) => {
+    await handleEditReply(parentCommentId, replyId); // API 요청
+    setIsEditingCommentId(null); // 수정 모드 종료
+    setEditingCommentText(''); // 입력 필드 초기화
+  };
 
   if (isLoading) {
     return (
@@ -652,6 +737,16 @@ function PostDetail() {
               </button>
             )}
           </span>
+          <span id='patch-article-button'>
+            {post.name === userNickname && ( // 작성자 닉네임과 비교
+              <button 
+                onClick={() => navigate(`/edit-form/${postId}`)} // 수정 페이지로 이동
+                className='delete-article-button'
+              >
+                수정
+              </button>
+            )}
+          </span>
           <span className='report'>
             <button className='report-button' onClick={() => setIsReportModalOpen(true)}>🚨</button>
           </span>
@@ -711,7 +806,17 @@ function PostDetail() {
                   />
                   <span>{comment.commentAuthorResponse.nickname}</span>
                 </div>
-                <p style={{ display: 'inline', marginLeft: '30px' }}>{comment.content}</p>
+                {isEditingCommentId === comment.commentId ? ( // 수정 모드일 때
+                  <input
+                    type="text"
+                    value={editingCommentText} // 수정할 댓글 내용을 입력란에 표시
+                    onChange={(e) => setEditingCommentText(filterEmoji(e.target.value))}
+                    className="edit-comment-input"
+                    maxLength={255}
+                  />
+                ) : ( // 수정 모드가 아닐 때
+                  <p style={{ display: 'inline', marginLeft: '30px' }}>{comment.content}</p>
+                )}
                 <div style={{ marginTop: '10px', display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
                   <button className='report-button' onClick={() => {
                     setCommentToReportId(comment.commentId); // 댓글 ID 설정
@@ -730,13 +835,30 @@ function PostDetail() {
                     답글달기
                   </button>
                   {comment.commentAuthorResponse.nickname === userNickname && ( // 작성자 닉네임과 비교
-                    <button 
-                      onClick={() => handleDeleteComment(comment.commentId)}
-                      className="delete-comment-button"
-                      style={{ marginLeft: '10px' }} // 버튼 간격 조정
-                    >
-                      삭제
-                    </button>
+                    <>
+                      {isEditingCommentId === comment.commentId ? ( // 수정 모드일 때
+                        <button 
+                          onClick={() => handleEditCommentSubmit(comment.commentId)} // 수정 완료 버튼 클릭 시
+                          className="delete-comment-button"
+                        >
+                          수정 완료
+                        </button>
+                      ) : ( // 수정 모드가 아닐 때
+                        <button 
+                          onClick={() => handleEditButtonClick(comment.commentId, comment.content)} // 수정 버튼 클릭 시
+                          className="delete-comment-button"
+                        >
+                          수정
+                        </button>
+                      )}
+                      <button 
+                        onClick={() => handleDeleteComment(comment.commentId)}
+                        className="delete-comment-button"
+                        style={{ marginLeft: '10px' }} // 버튼 간격 조정
+                      >
+                        삭제
+                      </button>
+                    </>
                   )}
                 </div>
               </div>
@@ -775,7 +897,17 @@ function PostDetail() {
                     />
                     <span>{reply.commentAuthorResponse.nickname}</span>
                   </div>
-                  <p style={{ display: 'inline', marginLeft: '30px' }}><span style={{color: 'lightgray'}}>└</span> {reply.content}</p>
+                  {isEditingCommentId === reply.commentId ? ( // 수정 모드일 때
+                    <input
+                      type="text"
+                      value={editingCommentText} // 수정할 대댓글 내용을 입력란에 표시
+                      onChange={(e) => setEditingCommentText(filterEmoji(e.target.value))}
+                      className="edit-comment-input"
+                      maxLength={255}
+                    />
+                  ) : ( // 수정 모드가 아닐 때
+                    <p style={{ display: 'inline', marginLeft: '30px' }}><span style={{color: 'lightgray'}}>└</span> {reply.content}</p>
+                  )}
                   <div style={{ marginTop: '10px', display: 'flex', justifyContent: 'flex-end' }}>
                     <button className='report-button' onClick={() => openReplyReportModal(comment.commentId, reply.commentId)}>🚨</button>
                     <button className='heart-button' onClick={() => {
@@ -785,12 +917,29 @@ function PostDetail() {
                       {replyLiked[reply.commentId] ? <img src={thumbed} alt='thumbed' style={{width: '13px', height: '14px'}}/> : <img src={thumb} alt='thumb' style={{width: '13px', height: '14px'}}/>} {/* 하트 상태에 따라 변경 */}
                     </button>
                     {reply.commentAuthorResponse.nickname === userNickname && ( // 대댓글 작성자 닉네임과 비교
-                      <button 
-                        onClick={() => handleDeleteReply(comment.commentId, reply.commentId)}
-                        className="delete-comment-button"
-                      >
-                        삭제
-                      </button>
+                      <>
+                        {isEditingCommentId === reply.commentId ? ( // 수정 모드일 때
+                          <button 
+                            onClick={() => handleEditReplySubmit(comment.commentId, reply.commentId)} // 수정 완료 버튼 클릭 시
+                            className="delete-comment-button"
+                          >
+                            수정 완료
+                          </button>
+                        ) : ( // 수정 모드가 아닐 때
+                          <button 
+                            onClick={() => handleEditReplyButtonClick(comment.commentId, reply.commentId, reply.content)} // 수정 버튼 클릭 시
+                            className="delete-comment-button"
+                          >
+                            수정
+                          </button>
+                        )}
+                        <button 
+                          onClick={() => handleDeleteReply(comment.commentId, reply.commentId)}
+                          className="delete-comment-button"
+                        >
+                          삭제
+                        </button>
+                      </>
                     )}
                   </div>
                 </div>
